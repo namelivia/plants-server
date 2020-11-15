@@ -7,10 +7,35 @@ services:
       dockerfile: Dockerfile
     container_name: plants-server-app
     restart: unless-stopped
+    depends_on:
+        - database
     tty: true
     working_dir: /app
     ports:
       - "80:80"
+      - "4444:4444"
     volumes:
       - ./:/app
-    command: ["pipenv", "run", "uvicorn", "main:app", "--reload", "--host=0.0.0.0", "--port=80"]
+    command: ["pipenv", "run", "uvicorn", "app.main:app", "--reload", "--host=0.0.0.0", "--port=80"]
+    networks:
+      - app-network
+
+  #Postgres Service
+  database:
+    image: postgres:latest
+    container_name: database
+    restart: unless-stopped
+    tty: true
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: plants
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+    networks:
+      - app-network
+
+#Docker Networks
+networks:
+  app-network:
+    driver: bridge

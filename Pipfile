@@ -7,10 +7,17 @@ verify_ssl = true
 pytest = "*"
 mock = "*"
 pytest-cov = "*"
+pudb = "*"
 
 [packages]
 fastapi = "*"
 uvicorn = "*"
+python-multipart = "*"
+sqlalchemy = "*"
+psycopg2 = "*"
+shamrock = "*"
+alembic = "*"
+sqlalchemy-utils = "*"
 
 [requires]
 python_version = "3.8"
