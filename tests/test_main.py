@@ -3,7 +3,7 @@ from .test_base import (
     create_test_database,
     database_test_session,
 )
-from app.models import Plant
+from app.plants.models import Plant
 
 
 class TestApp:

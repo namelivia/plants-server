@@ -11,7 +11,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from typing import Optional, List
 from http import HTTPStatus
 from sqlalchemy.orm import Session
-from . import crud, models, schemas
+from app.plants import crud, models, schemas
 from .database import SessionLocal, engine
 from shamrock import Shamrock
 

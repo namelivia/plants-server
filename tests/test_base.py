@@ -3,7 +3,7 @@ from fastapi.testclient import TestClient
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from app.main import app, get_db
-from app import models
+from app.database import Base
 from sqlalchemy_utils import database_exists, create_database, drop_database
 
 url = "sqlite:///./test.db"
@@ -16,7 +16,7 @@ def get_test_db():
     try:
         yield test_db
     finally:
-        for tbl in reversed(models.Base.metadata.sorted_tables):
+        for tbl in reversed(Base.metadata.sorted_tables):
             engine.execute(tbl.delete())
         test_db.close()
 
@@ -31,7 +31,7 @@ def create_test_database():
     if database_exists(url):
         drop_database(url)
     create_database(url)
-    models.Base.metadata.create_all(engine)
+    Base.metadata.create_all(engine)
     app.dependency_overrides[get_db] = get_test_db
     yield
     drop_database(url)
