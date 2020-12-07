@@ -2,19 +2,11 @@ language: python
 env:
   global:
     - IMAGE_NAME=namelivia/plants-server
-    - TEST_DATABASE_URL:sqlite:///./test.db
 services:
     - docker
-python:
-  - 3.8
-install:
-  - pip install pipenv
-  - pipenv install --dev
-before_script:
-  - docker pull "$IMAGE_NAME" || true
-script:
-  - pipenv run pytest --cov-report=xml --cov=app tests/
-  - docker build --pull --cache-from "$IMAGE_NAME" --tag "$IMAGE_NAME" .
+before_install:
+  - docker build . --tag "$IMAGE_NAME"
+script: bash ./run_tests
 before_deploy:
   - docker login -u "$REGISTRY_USER" -p "$REGISTRY_PASS"
   - docker tag "$IMAGE_NAME" "${IMAGE_NAME}:latest"
