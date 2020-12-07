@@ -1,24 +1,28 @@
+import os
 import pytest
 from fastapi.testclient import TestClient
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from app.main import app
 from app.dependencies import get_db
-from app.database import Base
 from sqlalchemy_utils import database_exists, create_database, drop_database
+from alembic.config import Config
+from alembic import command
 
-url = "sqlite:///./test.db"
+os.environ['TESTING'] = 'True'
+url = os.environ['TEST_DATABASE_URL']
 engine = create_engine(url, connect_args={"check_same_thread": False})
 
 
 def get_test_db():
+    config = Config('alembic.ini')
+    command.upgrade(config, 'head')
     SessionLocal = sessionmaker(bind=engine)
     test_db = SessionLocal()
     try:
         yield test_db
     finally:
-        for tbl in reversed(Base.metadata.sorted_tables):
-            engine.execute(tbl.delete())
+        command.downgrade(config, 'base')
         test_db.close()
 
 
@@ -32,7 +36,6 @@ def create_test_database():
     if database_exists(url):
         drop_database(url)
     create_database(url)
-    Base.metadata.create_all(engine)
     app.dependency_overrides[get_db] = get_test_db
     yield
     drop_database(url)

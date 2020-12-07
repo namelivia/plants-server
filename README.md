@@ -13,3 +13,8 @@ To run the tests:
 ```
 ./run_tests
 ```
+
+To generate migrations:
+```
+./run_alembic "YOUR MIGRATION MESSAGE"
+```

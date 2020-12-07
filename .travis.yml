@@ -2,6 +2,7 @@ language: python
 env:
   global:
     - IMAGE_NAME=namelivia/plants-server
+    - TESTING=True
 services:
     - docker
 python:

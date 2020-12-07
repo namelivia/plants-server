@@ -1,9 +1,10 @@
 from sqlalchemy import Column, Integer, String
+from sqlalchemy.ext.declarative import declarative_base
 
-from app.database import Base
+PlantsBase = declarative_base()
 
 
-class Plant(Base):
+class Plant(PlantsBase):
     __tablename__ = "plants"
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String, nullable=False)
