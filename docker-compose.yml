@@ -34,7 +34,7 @@ services:
   #Postgres Service
   database:
     image: postgres:latest
-    container_name: database
+    container_name: plants-server-database
     restart: unless-stopped
     tty: true
     ports:
