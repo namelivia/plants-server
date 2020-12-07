@@ -6,7 +6,7 @@ services:
     - docker
 before_install:
   - docker build . --tag "$IMAGE_NAME"
-script: bash ./run_tests
+script: bash ./run_tests_ci
 before_deploy:
   - docker login -u "$REGISTRY_USER" -p "$REGISTRY_PASS"
   - docker tag "$IMAGE_NAME" "${IMAGE_NAME}:latest"
