@@ -18,6 +18,8 @@ psycopg2 = "*"
 shamrock = "*"
 alembic = "*"
 sqlalchemy-utils = "*"
+gunicorn = "*"
+uvloop = "*"
 
 [requires]
 python_version = "3.8"
