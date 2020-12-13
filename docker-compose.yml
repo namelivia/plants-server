@@ -5,6 +5,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+      target: development
     container_name: plants-server-app
     restart: unless-stopped
     depends_on:
