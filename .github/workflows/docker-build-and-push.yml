@@ -1,5 +1,5 @@
 # Docker build and push
-name: Label Commenter
+name: Docker build and push
 on:
   push:
     branches:
