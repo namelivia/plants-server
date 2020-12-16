@@ -12,4 +12,15 @@ EXPOSE 4444
 
 FROM builder AS production
 RUN pipenv install
-CMD ["pipenv", "run", "gunicorn", "-b" , "0.0.0.0:80", "--log-file=-", "--error-logfile=-", "-w", "4", "-k", "uvicorn.workers.UvicornWorker" , "app.main:app"]
+CMD [ \
+  "pipenv", \
+  "run", \
+  "gunicorn", \
+  "-b 0.0.0.0:80", \
+  "--log-file=-", \
+  "--error-logfile=-", \
+  "--worker-tmp-dir /dev/shm", \
+  "-w 2", \
+  "-k uvicorn.workers.UvicornWorker" , \
+  "app.main:app" \
+]
