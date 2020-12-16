@@ -21,6 +21,7 @@ CMD [ \
   "--error-logfile=-", \
   "--worker-tmp-dir /dev/shm", \
   "-w 2", \
+  "--worker-class=gthread" \
   "-k uvicorn.workers.UvicornWorker" , \
   "app.main:app" \
 ]
