@@ -9,7 +9,7 @@ Base.metadata.create_all(bind=engine)
 app = FastAPI()
 
 origins = [
-    'http://localhost:8080'
+    'http://localhost:8080',
     'http://plants.namelivia.com'
 ]
 
