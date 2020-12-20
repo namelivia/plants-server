@@ -12,9 +12,8 @@ services:
         - database
     tty: true
     working_dir: /app
-    ports:
-      - "80:80"
-      - "4444:4444"
+    expose:
+      - "80"
     volumes:
       - ./:/app
     environment:
@@ -44,6 +43,21 @@ services:
       POSTGRES_DB: plants
       POSTGRES_USER: user
       POSTGRES_PASSWORD: password
+    networks:
+      - app-network
+
+  #Pomerium proxy
+  plants-auth-proxy:
+    image: pomerium/pomerium:v0.11.0-rc1
+    container_name: plants_proxy
+    restart: unless-stopped
+    tty: true
+    ports:
+      - "443:443"
+    volumes:
+      - ./pomerium/config.yaml:/pomerium/config.yaml
+      - ./certs/localhost.crt:/pomerium/cert.pem:ro
+      - ./certs/localhost.key:/pomerium/privkey.pem:ro
     networks:
       - app-network
 
