@@ -15,6 +15,6 @@ class Notifications:
         }
         response = requests.post(
             url=os.getenv("NOTIFICATIONS_SERVICE_ENDPOINT"),
-            data=data
+            json=data
         )
         logger.info(response.text)
