@@ -9,7 +9,7 @@ Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
 
-logger = logging.getLogger('foo')
+logger = logging.getLogger(__name__)
 logger.addHandler(logging.StreamHandler(sys.stdout))
 logger.setLevel(logging.INFO)
 
