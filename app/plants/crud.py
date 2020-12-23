@@ -21,6 +21,7 @@ def create_plant(db: Session, plant: schemas.PlantCreate):
     db.add(db_plant)
     db.commit()
     db.refresh(db_plant)
+    logger.info("New plant created")
     try:
         Notifications.send("A new plant has been created")
     except Exception as err:
@@ -31,3 +32,4 @@ def create_plant(db: Session, plant: schemas.PlantCreate):
 def delete_plant(db: Session, plant: models.Plant):
     db.delete(plant)
     db.commit()
+    logger.info("Plant deleted")
