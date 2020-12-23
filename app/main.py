@@ -5,11 +5,13 @@ from app.plants.api import router
 import logging
 import sys
 
-logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
-
 Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
+
+logger = logging.getLogger('foo')
+logger.addHandler(logging.StreamHandler(sys.stdout))
+logger.setLevel(logging.INFO)
 
 origins = [
     'http://localhost:8080',

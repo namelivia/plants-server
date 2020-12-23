@@ -1,7 +1,10 @@
 from sqlalchemy.orm import Session
+import logging
 
 from . import models, schemas
 from app.notifications.notifications import Notifications
+
+logger = logging.getLogger(__name__)
 
 
 def get_plant(db: Session, plant_id: int):
@@ -18,7 +21,10 @@ def create_plant(db: Session, plant: schemas.PlantCreate):
     db.add(db_plant)
     db.commit()
     db.refresh(db_plant)
-    Notifications.send("A new plant has been created")
+    try:
+        Notifications.send("A new plant has been created")
+    except Exception as err:
+        logger.error(f"Notification could not be sent: {str(err)}")
     return db_plant
 
 
