@@ -9,9 +9,7 @@ Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
 
-logger = logging.getLogger(__name__)
-logger.addHandler(logging.StreamHandler(sys.stdout))
-logger.setLevel(logging.INFO)
+logging.basicConfig(stream=sys.stdout, level=logging.INFO)
 
 origins = [
     'http://localhost:8080',
