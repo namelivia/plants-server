@@ -17,4 +17,4 @@ class Notifications:
             url=os.getenv("NOTIFICATIONS_SERVICE_ENDPOINT"),
             data=data
         )
-        logger.info(str(response))
+        logger.info(response.text)
