@@ -22,6 +22,7 @@ sqlalchemy-utils = "*"
 gunicorn = "*"
 uvloop = "*"
 httptools = "*"
+httpx = "*"
 
 [requires]
 python_version = "3.8"

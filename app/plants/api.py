@@ -1,8 +1,6 @@
 from fastapi import (
     APIRouter,
     Path,
-    File,
-    UploadFile,
     HTTPException,
     Depends,
     Response
@@ -87,17 +85,3 @@ async def delete_plant(
 ):
     crud.delete_plant(db, _get_plant(db, plant_id))
     return Response(status_code=HTTPStatus.NO_CONTENT)
-
-
-# Good for small files
-@router.post("/files/")
-async def create_file(file: bytes = File(None, title="File to review")):
-    return {"file_size": len(file)}
-
-
-# More routerropriate for big files
-@router.post("/uploadfile/")
-async def create_upload_file(
-    file: UploadFile = File(None, title="File to upload")
-):
-    return {"filename": file.filename}

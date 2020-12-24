@@ -1,7 +1,8 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from .database import engine, Base
-from app.plants.api import router
+from app.plants.api import router as plants
+from app.images.api import router as images
 import logging
 import sys
 
@@ -24,4 +25,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-app.include_router(router)
+[app.include_router(router) for router in [
+    plants,
+    images
+]]
