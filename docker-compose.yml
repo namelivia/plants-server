@@ -76,6 +76,7 @@ services:
     environment:
         UPLOAD_ENABLED: "True"
         LOG_LEVEL: "debug"
+        ALOW_UNSAFE_URL: "True"
 
 
 #Docker Networks

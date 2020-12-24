@@ -10,3 +10,4 @@ class Plant(PlantsBase):
     name = Column(String, nullable=False)
     description = Column(String)
     days_until_watering = Column(Integer, nullable=False)
+    image = Column(String)

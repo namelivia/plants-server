@@ -6,6 +6,7 @@ from pydantic import BaseModel, Field
 class PlantBase(BaseModel):
     name: str = Field(title="Name for the plant")
     description: Optional[str] = Field(title="Description for the plant")
+    image: Optional[str] = Field(title="Image url for the plant")
 
 
 class PlantCreate(PlantBase):
