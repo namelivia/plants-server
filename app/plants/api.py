@@ -49,7 +49,7 @@ def get_plant(
 
 @router.get("/species")
 def test_api(query: str = ''):
-    api = Shamrock(os.getenv("IMAGES_SERVICE_ENDPOINT"))
+    api = Shamrock(os.getenv("TREFLE_API_KEY"))
     return api.search(query)
 
 
