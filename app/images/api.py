@@ -2,9 +2,10 @@ from fastapi import (
     APIRouter,
     File,
     UploadFile,
-    StreamingResponse
+    Response,
 )
 import httpx
+import requests
 import os
 from . import schemas
 import logging
@@ -27,6 +28,11 @@ async def post_image(media: UploadFile = File(...)):
     return schemas.Image(location=response.headers['location'])
 
 
+async def fake_video_streamer():
+    for i in range(10):
+        yield b"some fake video bytes"
+
+
 @router.get("/{image_path}/{extra}")
 async def get_image(
     image_path: str,
@@ -34,7 +40,5 @@ async def get_image(
 ):
     logger.info("Retrieving image")
     logger.info(image_path)
-    response = httpx.get(
-        url=os.getenv("IMAGES_SERVICE_ENDPOINT") + '/' + image_path
-    )
-    return StreamingResponse(response, media_type="image/png")
+    image = requests.get(os.getenv("IMAGES_SERVICE_ENDPOINT") + '/' + image_path)
+    return Response(content=image.content)
