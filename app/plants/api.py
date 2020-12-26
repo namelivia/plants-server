@@ -11,6 +11,7 @@ from . import crud, schemas
 from typing import Optional, List
 from sqlalchemy.orm import Session
 from shamrock import Shamrock
+import os
 
 router = APIRouter(
     prefix="/plants",
@@ -48,7 +49,7 @@ def get_plant(
 
 @router.get("/species")
 def test_api(query: str = ''):
-    api = Shamrock('YOUR_TREFLE_API_KEY')
+    api = Shamrock(os.getenv("IMAGES_SERVICE_ENDPOINT"))
     return api.search(query)
 
 
