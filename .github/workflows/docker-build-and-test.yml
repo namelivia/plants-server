@@ -21,10 +21,10 @@ jobs:
         with:
           push: false
           target: development
-          repository: test-image
+          tags: namelivia/plants-server:latest
       - 
         name: Execute command
         uses: addnab/docker-run-action@v1
         with:
-          image: test-image:latest
+          image: namelivia/plants-server:latest
           run: echo "hello world"
