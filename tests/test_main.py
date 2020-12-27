@@ -28,6 +28,7 @@ class TestApp:
             "name": "Test plant 2",
             "description": "Test description",
             "days_until_watering": 7,
+            "image": None,
         }
 
     def test_create_plant_no_description(self, client):
@@ -40,6 +41,7 @@ class TestApp:
             "name": "Test plant",
             "description": None,
             "days_until_watering": 7,
+            "image": None,
         }
 
     def test_get_non_existing_plant(self, client):
@@ -55,6 +57,7 @@ class TestApp:
             "name": "Test plant",
             "description": 'Test Description',
             "days_until_watering": 3,
+            "image": None,
         }
 
     def test_create_plant_invalid(self, client):
@@ -73,11 +76,13 @@ class TestApp:
             "name": "Test plant",
             "description": 'Test Description',
             "days_until_watering": 3,
+            "image": None,
         }, {
             "id": 2,
             "name": "Test plant",
             "description": 'Test Description',
             "days_until_watering": 3,
+            "image": None,
         }]
 
     def test_delete_non_existing_plant(self, client):
