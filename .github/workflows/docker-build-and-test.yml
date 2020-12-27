@@ -21,10 +21,11 @@ jobs:
         with:
           push: false
           target: development
-          tags: namelivia/plants-server:latest
+          load: true
+          tags: plants-server-testing:latest
       - 
         name: Execute command
         uses: addnab/docker-run-action@v1
         with:
-          image: namelivia/plants-server:latest
-          run: pipenv run pytest
+          image: plants-server-testing:latest
+          run: TESTING=True TEST_DATABASE_URL=sqlite:///./test.db pipenv run pytest
