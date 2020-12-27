@@ -27,4 +27,4 @@ jobs:
         uses: addnab/docker-run-action@v1
         with:
           image: namelivia/plants-server:latest
-          run: echo "hello world"
+          run: pipenv run pytest

@@ -1,2 +1,2 @@
 #!/bin/bash
-docker run -e TESTING=True -e TEST_DATABASE_URL=sqlite:///./test.db namelivia/plants-server pipenv run pytest
+docker run -e TESTING=True -e TEST_DATABASE_URL=sqlite:///./test.db namelivia/plants-server:latest pipenv run pytest
