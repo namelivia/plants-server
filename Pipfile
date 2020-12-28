@@ -8,6 +8,7 @@ pytest = "*"
 mock = "*"
 pytest-cov = "*"
 pudb = "*"
+codecov = "*"
 
 [packages]
 fastapi = "*"

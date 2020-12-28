@@ -28,11 +28,6 @@ async def post_image(media: UploadFile = File(...)):
     return schemas.Image(location=response.headers['location'])
 
 
-async def fake_video_streamer():
-    for i in range(10):
-        yield b"some fake video bytes"
-
-
 @router.get("/{image_path}/{extra}")
 async def get_image(
     image_path: str,
