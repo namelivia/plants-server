@@ -28,11 +28,13 @@ jobs:
         uses: addnab/docker-run-action@v1
         with:
           image: plants-server-testing:latest
-          run: |
-            TESTING=True
-            TEST_DATABASE_URL=sqlite:///./test.db
-            IMAGES_SERVICE_ENDPOINT=http://images-service:80/image
-            pipenv run pytest
+          run: TESTING=True TEST_DATABASE_URL=sqlite:///./test.db IMAGES_SERVICE_ENDPOINT=http://images-service:80/image pipenv run pytest
+      - 
+        name: Send test coverage to codecov
+        uses: addnab/docker-run-action@v1
+        with:
+          image: plants-server-testing:latest
+          run: pipenv run codecov --commit=${{ github.sha }}
       -
         name: Set up production Docker Buildx
         id: production_builder
