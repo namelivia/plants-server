@@ -23,7 +23,7 @@ def create_plant(db: Session, plant: schemas.PlantCreate):
     db.refresh(db_plant)
     logger.info("New plant created")
     try:
-        Notifications.send("A new plant has been created")
+        Notifications.send(f"A new plant called {db_plant.name} has been created")
     except Exception as err:
         logger.error(f"Notification could not be sent: {str(err)}")
     return db_plant
@@ -39,5 +39,9 @@ def water_plant(db: Session, plant: models.Plant):
     plant.days_until_watering = 0
     db.commit()
     db.refresh(plant)
+    try:
+        Notifications.send(f"The plant {plant.name} has been watered")
+    except Exception as err:
+        logger.error(f"Notification could not be sent: {str(err)}")
     logger.info("Plant watered")
     return plant

@@ -18,7 +18,8 @@ class TestApp:
         session.add(db_plant)
         session.commit()
 
-    def test_create_plant_description(self, client):
+    @patch("app.notifications.notifications.Notifications.send")
+    def test_create_plant_description(self, m_send_notification, client):
         response = client.post("/plants", json={
             'name': 'Test plant 2',
             'description': 'Test description',
@@ -31,8 +32,12 @@ class TestApp:
             "days_until_watering": 7,
             "image": None,
         }
+        m_send_notification.assert_called_with(
+            "A new plant called Test plant 2 has been created"
+        )
 
-    def test_create_plant_no_description(self, client):
+    @patch("app.notifications.notifications.Notifications.send")
+    def test_create_plant_no_description(self, m_send_notification, client):
         response = client.post("/plants", json={
             'name': 'Test plant'
         })
@@ -44,6 +49,9 @@ class TestApp:
             "days_until_watering": 7,
             "image": None,
         }
+        m_send_notification.assert_called_with(
+            "A new plant called Test plant has been created"
+        )
 
     def test_get_non_existing_plant(self, client):
         response = client.get("/plants/99")
@@ -67,7 +75,8 @@ class TestApp:
         })
         assert response.status_code == 422
 
-    def test_water_plant(self, client, database_test_session):
+    @patch("app.notifications.notifications.Notifications.send")
+    def test_water_plant(self, m_send_notification, client, database_test_session):
         self._insert_test_plant(database_test_session)
         response = client.post("/plants/1/water")
         assert response.status_code == 200
@@ -78,6 +87,7 @@ class TestApp:
             "days_until_watering": 0,
             "image": None,
         }
+        m_send_notification.assert_called_with("The plant Test plant has been watered")
 
     def test_get_all_plants(self, client, database_test_session):
         self._insert_test_plant(database_test_session)
