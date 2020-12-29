@@ -33,3 +33,11 @@ def delete_plant(db: Session, plant: models.Plant):
     db.delete(plant)
     db.commit()
     logger.info("Plant deleted")
+
+
+def water_plant(db: Session, plant: models.Plant):
+    plant.days_until_watering = 0
+    db.commit()
+    db.refresh(plant)
+    logger.info("Plant watered")
+    return plant

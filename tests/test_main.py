@@ -67,6 +67,18 @@ class TestApp:
         })
         assert response.status_code == 422
 
+    def test_water_plant(self, client, database_test_session):
+        self._insert_test_plant(database_test_session)
+        response = client.post("/plants/1/water")
+        assert response.status_code == 200
+        assert response.json() == {
+            "id": 1,
+            "name": "Test plant",
+            "description": 'Test Description',
+            "days_until_watering": 0,
+            "image": None,
+        }
+
     def test_get_all_plants(self, client, database_test_session):
         self._insert_test_plant(database_test_session)
         self._insert_test_plant(database_test_session)

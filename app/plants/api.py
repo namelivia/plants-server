@@ -47,6 +47,15 @@ def get_plant(
     return _get_plant(db, plant_id)
 
 
+@router.post("/{plant_id}/water", response_model=schemas.Plant)
+def water_plant(
+    plant_id: int = Path(None, title="The ID of the plant to get", ge=1),
+    db: Session = Depends(get_db)
+):
+    plant = _get_plant(db, plant_id)
+    return crud.water_plant(db, plant)
+
+
 @router.get("/species")
 def test_api(query: str = ''):
     api = Shamrock(os.getenv("TREFLE_API_KEY"))
