@@ -22,4 +22,4 @@ policy:
     prefix_rewrite: /
     pass_identity_headers: true
     allowed_users:
-      - ohcan2@gmail.com
+      - your-email@here.com
