@@ -78,6 +78,21 @@ services:
         LOG_LEVEL: "debug"
         ALOW_UNSAFE_URL: "True"
 
+  #Scheduler service
+  scheduler-service:
+    image: apache/airflow:latest
+    command: scheduler
+    depends_on:
+        - database
+    container_name: scheduler-service
+    restart: unless-stopped
+    tty: true
+    networks:
+      - app-network
+    environment:
+        AIRFLOW__CORE__SQL_ALCHEMY_CONN: "postgresql+psycopg2://user:password@database/airflow"
+        AIRFLOW__CORE__EXECUTOR: "LocalExecutor"
+
 
 #Docker Networks
 networks:
