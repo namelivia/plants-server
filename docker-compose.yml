@@ -108,7 +108,7 @@ services:
         AIRFLOW__CORE__SQL_ALCHEMY_CONN: "postgresql+psycopg2://airflow:airflow@database2:5433/airflow"
         AIRFLOW__CORE__EXECUTOR: "LocalExecutor"
     volumes:
-    	- ./dags:/opt/airflow/dags
+        - ./dags:/opt/airflow/dags
 
 
 #Docker Networks

@@ -27,3 +27,6 @@ httpx = "*"
 
 [requires]
 python_version = "3.8"
+
+[scripts]
+scheduler = "python ./scripts/scheduler.py"

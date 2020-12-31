@@ -5,18 +5,23 @@ from .test_base import (
     database_test_session,
 )
 from app.plants.models import Plant
+from app.plants.schemas import Plant as PlantSchema
+from app.tasks.tasks import Tasks
 
 
 class TestApp:
 
-    def _insert_test_plant(self, session):
-        db_plant = Plant(
-            name='Test plant',
-            description='Test Description',
-            days_until_watering=3,
-        )
+    def _insert_test_plant(self, session, plant: dict = {}):
+        data = {
+            "name": 'Test plant',
+            "description": 'Test Description',
+            "days_until_watering": 3,
+        }
+        data.update(plant)
+        db_plant = Plant(**data)
         session.add(db_plant)
         session.commit()
+        return db_plant
 
     @patch("app.notifications.notifications.Notifications.send")
     def test_create_plant_description(self, m_send_notification, client):
@@ -129,3 +134,22 @@ class TestApp:
         m_get.assert_called_with('http://images-service:80/image/image_path')
         assert response.status_code == 200
         assert response.content == b'image_binary_data'
+
+    @patch("app.notifications.notifications.Notifications.send")
+    def test_sending_watering_reminders(self, m_send_notification, database_test_session):
+        self._insert_test_plant(database_test_session)
+        dry_plant = self._insert_test_plant(database_test_session, {
+            "days_until_watering": 10
+        })
+        another_dry_plant = self._insert_test_plant(database_test_session, {
+            "days_until_watering": 12
+        })
+        self._insert_test_plant(database_test_session, {
+            "days_until_watering": 5
+        })
+        result = Tasks.send_watering_reminders(database_test_session)
+        m_send_notification.assert_called_with(
+            "There are 2 plants that need to be watered"
+        )
+        assert len(result) == 2
+        assert set(result) == set([dry_plant, another_dry_plant])

@@ -1,3 +1,4 @@
+# TODO: Maybe the filename crud is not that good since this is not CRUD anymore
 from sqlalchemy.orm import Session
 import logging
 
@@ -23,7 +24,9 @@ def create_plant(db: Session, plant: schemas.PlantCreate):
     db.refresh(db_plant)
     logger.info("New plant created")
     try:
-        Notifications.send(f"A new plant called {db_plant.name} has been created")
+        Notifications.send(
+            f"A new plant called {db_plant.name} has been created"
+        )
     except Exception as err:
         logger.error(f"Notification could not be sent: {str(err)}")
     return db_plant
@@ -45,3 +48,9 @@ def water_plant(db: Session, plant: models.Plant):
         logger.error(f"Notification could not be sent: {str(err)}")
     logger.info("Plant watered")
     return plant
+
+
+def get_plants_to_be_watered(db: Session):
+    return db.query(models.Plant).filter(
+        models.Plant.days_until_watering > 5
+    ).all()
