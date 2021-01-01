@@ -10,8 +10,6 @@ from app.dependencies import get_db
 from . import crud, schemas
 from typing import Optional, List
 from sqlalchemy.orm import Session
-from shamrock import Shamrock
-import os
 
 router = APIRouter(
     prefix="/plants",

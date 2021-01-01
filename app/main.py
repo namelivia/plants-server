@@ -3,6 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from .database import engine, Base
 from app.plants.api import router as plants
 from app.images.api import router as images
+from app.users.api import router as users
 import logging
 import sys
 
@@ -27,5 +28,6 @@ app.add_middleware(
 
 [app.include_router(router) for router in [
     plants,
-    images
+    images,
+    users,
 ]]

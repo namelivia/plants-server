@@ -23,6 +23,8 @@ gunicorn = "*"
 uvloop = "*"
 httptools = "*"
 httpx = "*"
+pyjwt = "*"
+cryptography = "*"
 
 [requires]
 python_version = "3.8"
