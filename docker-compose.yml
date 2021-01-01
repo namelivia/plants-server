@@ -33,7 +33,6 @@ services:
     networks:
       - app-network
 
-  #This could be done with just one container, just adding two for simplicity
   #Postgres Service
   database:
     image: postgres:latest
@@ -46,20 +45,6 @@ services:
       POSTGRES_DB: plants
       POSTGRES_USER: user
       POSTGRES_PASSWORD: password
-    networks:
-      - app-network
-
-  database2:
-    image: postgres:latest
-    container_name: airflow-database
-    restart: unless-stopped
-    tty: true
-    ports:
-      - "5433:5433"
-    environment:
-      POSTGRES_DB: airflow
-      POSTGRES_USER: airflow
-      POSTGRES_PASSWORD: airflow
     networks:
       - app-network
 
@@ -92,24 +77,6 @@ services:
         UPLOAD_ENABLED: "True"
         LOG_LEVEL: "debug"
         ALOW_UNSAFE_URL: "True"
-
-  #Scheduler service
-  scheduler-service:
-    image: apache/airflow:latest
-    command: scheduler
-    depends_on:
-        - database
-    container_name: scheduler-service
-    restart: unless-stopped
-    tty: true
-    networks:
-      - app-network
-    environment:
-        AIRFLOW__CORE__SQL_ALCHEMY_CONN: "postgresql+psycopg2://airflow:airflow@database2:5433/airflow"
-        AIRFLOW__CORE__EXECUTOR: "LocalExecutor"
-    volumes:
-        - ./dags:/opt/airflow/dags
-
 
 #Docker Networks
 networks:
