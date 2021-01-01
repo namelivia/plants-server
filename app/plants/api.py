@@ -56,12 +56,6 @@ def water_plant(
     return crud.water_plant(db, plant)
 
 
-@router.get("/species")
-def test_api(query: str = ''):
-    api = Shamrock(os.getenv("TREFLE_API_KEY"))
-    return api.search(query)
-
-
 @router.post(
     "",
     response_model=schemas.Plant,
