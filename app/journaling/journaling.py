@@ -20,10 +20,10 @@ class Journaling:
         logger.info(response.text)
 
     @staticmethod
-    def get():
+    def get(key):
         logger.info("Reading journal")
         response = requests.get(
             url=os.getenv("JOURNALING_SERVICE_ENDPOINT") + '/all',
         )
         logger.info(response.text)
-        return response
+        return response.text

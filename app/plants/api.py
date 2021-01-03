@@ -46,9 +46,11 @@ def get_plant(
     return _get_plant(db, plant_id)
 
 
-@router.get("/journal")
-def get_journal():
-    return Journaling.get()
+@router.get("/{plant_id}/journal")
+def get_journal(
+    plant_id: int = Path(None, title="The ID of the plant to get", ge=1),
+):
+    return Journaling.get(plant_id)
 
 
 @router.post("/{plant_id}/water", response_model=schemas.Plant)
