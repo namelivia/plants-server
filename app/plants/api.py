@@ -10,6 +10,7 @@ from app.dependencies import get_db
 from . import crud, schemas
 from typing import Optional, List
 from sqlalchemy.orm import Session
+from app.journaling.journaling import Journaling
 
 router = APIRouter(
     prefix="/plants",
@@ -43,6 +44,11 @@ def get_plant(
     db: Session = Depends(get_db)
 ):
     return _get_plant(db, plant_id)
+
+
+@router.get("/journal")
+def get_journal():
+    return Journaling.get()
 
 
 @router.post("/{plant_id}/water", response_model=schemas.Plant)

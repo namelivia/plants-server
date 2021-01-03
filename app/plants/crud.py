@@ -4,6 +4,7 @@ import logging
 
 from . import models, schemas
 from app.notifications.notifications import Notifications
+from app.journaling.journaling import Journaling
 
 logger = logging.getLogger(__name__)
 
@@ -29,6 +30,12 @@ def create_plant(db: Session, plant: schemas.PlantCreate):
         )
     except Exception as err:
         logger.error(f"Notification could not be sent: {str(err)}")
+    try:
+        Journaling.create(
+            f"A new plant called {db_plant.name} has been created"
+        )
+    except Exception as err:
+        logger.error(f"Could not add journal entry: {str(err)}")
     return db_plant
 
 

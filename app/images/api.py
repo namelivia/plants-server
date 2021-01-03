@@ -35,5 +35,7 @@ async def get_image(
 ):
     logger.info("Retrieving image")
     logger.info(image_path)
-    image = requests.get(os.getenv("IMAGES_SERVICE_ENDPOINT") + '/' + image_path)
+    image = requests.get(
+        os.getenv("IMAGES_SERVICE_ENDPOINT") + '/' + image_path
+    )
     return Response(content=image.content)
