@@ -1,7 +1,7 @@
 # TODO: Maybe the filename crud is not that good since this is not CRUD anymore
 from sqlalchemy.orm import Session
 import logging
-
+import uuid
 from . import models, schemas
 from app.notifications.notifications import Notifications
 from app.journaling.journaling import Journaling
@@ -19,7 +19,11 @@ def get_plants(db: Session):
 
 
 def create_plant(db: Session, plant: schemas.PlantCreate):
-    db_plant = models.Plant(**plant.dict(), days_until_watering=7)
+    db_plant = models.Plant(
+        **plant.dict(),
+        days_until_watering=7,
+        journaling_key=uuid.uuid4()
+    )
     db.add(db_plant)
     db.commit()
     db.refresh(db_plant)
@@ -32,6 +36,7 @@ def create_plant(db: Session, plant: schemas.PlantCreate):
         logger.error(f"Notification could not be sent: {str(err)}")
     try:
         Journaling.create(
+            db_plant.journaling_key,
             f"A new plant called {db_plant.name} has been created"
         )
     except Exception as err:

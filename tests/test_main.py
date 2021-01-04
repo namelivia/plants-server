@@ -1,4 +1,5 @@
 from mock import patch, Mock
+import uuid
 from .test_base import (
     client,
     create_test_database,
@@ -12,10 +13,12 @@ from app.tasks.tasks import Tasks
 class TestApp:
 
     def _insert_test_plant(self, session, plant: dict = {}):
+        key = uuid.uuid4()
         data = {
             "name": 'Test plant',
             "description": 'Test Description',
             "days_until_watering": 3,
+            "journaling_key": key,
         }
         data.update(plant)
         db_plant = Plant(**data)
@@ -23,8 +26,11 @@ class TestApp:
         session.commit()
         return db_plant
 
+    @patch("uuid.uuid4")
     @patch("app.notifications.notifications.Notifications.send")
-    def test_create_plant_description(self, m_send_notification, client):
+    def test_create_plant_description(self, m_send_notification, m_uuid, client):
+        key = '271c973a-638f-4e01-9a79-308c880e3d11'
+        m_uuid.return_value = key
         response = client.post("/plants", json={
             'name': 'Test plant 2',
             'description': 'Test description',
@@ -36,13 +42,17 @@ class TestApp:
             "description": "Test description",
             "days_until_watering": 7,
             "image": None,
+            "journaling_key": key,
         }
         m_send_notification.assert_called_with(
             "A new plant called Test plant 2 has been created"
         )
 
+    @patch("uuid.uuid4")
     @patch("app.notifications.notifications.Notifications.send")
-    def test_create_plant_no_description(self, m_send_notification, client):
+    def test_create_plant_no_description(self, m_send_notification, m_uuid, client):
+        key = '271c973a-638f-4e01-9a79-308c880e3d11'
+        m_uuid.return_value = key
         response = client.post("/plants", json={
             'name': 'Test plant'
         })
@@ -53,6 +63,7 @@ class TestApp:
             "description": None,
             "days_until_watering": 7,
             "image": None,
+            "journaling_key": key,
         }
         m_send_notification.assert_called_with(
             "A new plant called Test plant has been created"
@@ -63,7 +74,8 @@ class TestApp:
         assert response.status_code == 404
 
     def test_get_existing_plant(self, client, database_test_session):
-        self._insert_test_plant(database_test_session)
+        key = uuid.uuid4()
+        self._insert_test_plant(database_test_session, {"journaling_key": key})
         response = client.get("/plants/1")
         assert response.status_code == 200
         assert response.json() == {
@@ -72,6 +84,7 @@ class TestApp:
             "description": 'Test Description',
             "days_until_watering": 3,
             "image": None,
+            "journaling_key": str(key),
         }
 
     def test_create_plant_invalid(self, client):
@@ -82,7 +95,8 @@ class TestApp:
 
     @patch("app.notifications.notifications.Notifications.send")
     def test_water_plant(self, m_send_notification, client, database_test_session):
-        self._insert_test_plant(database_test_session)
+        key = uuid.uuid4()
+        self._insert_test_plant(database_test_session, {"journaling_key": key})
         response = client.post("/plants/1/water")
         assert response.status_code == 200
         assert response.json() == {
@@ -91,12 +105,14 @@ class TestApp:
             "description": 'Test Description',
             "days_until_watering": 0,
             "image": None,
+            "journaling_key": str(key),
         }
         m_send_notification.assert_called_with("The plant Test plant has been watered")
 
     def test_get_all_plants(self, client, database_test_session):
-        self._insert_test_plant(database_test_session)
-        self._insert_test_plant(database_test_session)
+        key = uuid.uuid4()
+        self._insert_test_plant(database_test_session, {"journaling_key": key})
+        self._insert_test_plant(database_test_session, {"journaling_key": key})
         response = client.get("/plants")
         assert response.status_code == 200
         assert response.json() == [{
@@ -105,12 +121,14 @@ class TestApp:
             "description": 'Test Description',
             "days_until_watering": 3,
             "image": None,
+            "journaling_key": str(key),
         }, {
             "id": 2,
             "name": "Test plant",
             "description": 'Test Description',
             "days_until_watering": 3,
             "image": None,
+            "journaling_key": str(key),
         }]
 
     def test_delete_non_existing_plant(self, client):

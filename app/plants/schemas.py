@@ -1,5 +1,5 @@
 from typing import Optional
-
+from uuid import UUID
 from pydantic import BaseModel, Field
 
 
@@ -18,6 +18,7 @@ class Plant(PlantBase):
     days_until_watering: int = Field(
         title="Days until the next plant watering"
     )
+    journaling_key: UUID = Field(title="Parent key for the journal entry")
 
     class Config:
         orm_mode = True

@@ -1,6 +1,7 @@
 import os
 import requests
 import logging
+from uuid import UUID
 
 logger = logging.getLogger(__name__)
 
@@ -8,7 +9,7 @@ logger = logging.getLogger(__name__)
 class Journaling:
 
     @staticmethod
-    def create(message: str):
+    def create(key: UUID, message: str):
         logger.info("Creating journal entry")
         data = {
             'message': message
@@ -20,7 +21,7 @@ class Journaling:
         logger.info(response.text)
 
     @staticmethod
-    def get(key):
+    def get(key: UUID):
         logger.info("Reading journal")
         response = requests.get(
             url=os.getenv("JOURNALING_SERVICE_ENDPOINT") + '/all',

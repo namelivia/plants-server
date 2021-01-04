@@ -25,6 +25,7 @@ httptools = "*"
 httpx = "*"
 pyjwt = "*"
 cryptography = "*"
+fastapi-utils = "*"
 
 [requires]
 python_version = "3.8"
