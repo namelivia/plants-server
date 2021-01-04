@@ -12,7 +12,8 @@ class Journaling:
     def create(key: UUID, message: str):
         logger.info("Creating journal entry")
         data = {
-            'message': message
+            'message': message,
+            'key': str(key)
         }
         response = requests.post(
             url=os.getenv("JOURNALING_SERVICE_ENDPOINT") + '/new',
@@ -24,7 +25,7 @@ class Journaling:
     def get(key: UUID):
         logger.info("Reading journal")
         response = requests.get(
-            url=os.getenv("JOURNALING_SERVICE_ENDPOINT") + '/all',
+            url=os.getenv("JOURNALING_SERVICE_ENDPOINT") + f"{str(key)}/all",
         )
         logger.info(response.text)
         return response.text
