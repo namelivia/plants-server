@@ -25,7 +25,7 @@ class Journaling:
     def get(key: UUID):
         logger.info("Reading journal")
         response = requests.get(
-            url=os.getenv("JOURNALING_SERVICE_ENDPOINT") + f"{str(key)}/all",
+            url=os.getenv("JOURNALING_SERVICE_ENDPOINT") + f"/{str(key)}/all",
         )
         logger.info(response.text)
         return response.text
