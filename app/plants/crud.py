@@ -2,6 +2,7 @@
 from sqlalchemy.orm import Session
 import logging
 import uuid
+import datetime
 from . import models, schemas
 from app.notifications.notifications import Notifications
 from app.journaling.journaling import Journaling
@@ -21,7 +22,8 @@ def get_plants(db: Session):
 def create_plant(db: Session, plant: schemas.PlantCreate):
     db_plant = models.Plant(
         **plant.dict(),
-        days_until_watering=7,
+        days_until_watering=7,  # TODO: This will come from an API
+        last_watering=datetime.datetime.now(),
         journaling_key=uuid.uuid4()
     )
     db.add(db_plant)
@@ -51,7 +53,7 @@ def delete_plant(db: Session, plant: models.Plant):
 
 
 def water_plant(db: Session, plant: models.Plant):
-    plant.days_until_watering = 0
+    plant.last_watering = datetime.datetime.now()
     db.commit()
     db.refresh(plant)
     try:
@@ -71,5 +73,6 @@ def water_plant(db: Session, plant: models.Plant):
 
 def get_plants_to_be_watered(db: Session):
     return db.query(models.Plant).filter(
+        # TODO: This will compare the last date
         models.Plant.days_until_watering > 5
     ).all()

@@ -26,6 +26,7 @@ httpx = "*"
 pyjwt = "*"
 cryptography = "*"
 fastapi-utils = "*"
+pytest-freezegun = "*"
 
 [requires]
 python_version = "3.8"

@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String
+from sqlalchemy import Column, Integer, String, DateTime
 from sqlalchemy.ext.declarative import declarative_base
 from fastapi_utils.guid_type import GUID
 
@@ -12,4 +12,5 @@ class Plant(PlantsBase):
     journaling_key = Column(GUID, nullable=False)
     description = Column(String)
     days_until_watering = Column(Integer, nullable=False)
+    last_watering = Column(DateTime, nullable=False)
     image = Column(String)

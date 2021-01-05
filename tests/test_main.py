@@ -8,8 +8,11 @@ from .test_base import (
 from app.plants.models import Plant
 from app.plants.schemas import Plant as PlantSchema
 from app.tasks.tasks import Tasks
+import datetime
+from freezegun import freeze_time
 
 
+@freeze_time('2013-04-09')
 class TestApp:
 
     def _insert_test_plant(self, session, plant: dict = {}):
@@ -19,6 +22,7 @@ class TestApp:
             "description": 'Test Description',
             "days_until_watering": 3,
             "journaling_key": key,
+            "last_watering": datetime.datetime.now(),
         }
         data.update(plant)
         db_plant = Plant(**data)
@@ -43,6 +47,7 @@ class TestApp:
             "days_until_watering": 7,
             "image": None,
             "journaling_key": key,
+            "last_watering": "2013-04-09T00:00:00",
         }
         m_send_notification.assert_called_with(
             "A new plant called Test plant 2 has been created"
@@ -64,6 +69,7 @@ class TestApp:
             "days_until_watering": 7,
             "image": None,
             "journaling_key": key,
+            "last_watering": "2013-04-09T00:00:00",
         }
         m_send_notification.assert_called_with(
             "A new plant called Test plant has been created"
@@ -85,6 +91,7 @@ class TestApp:
             "days_until_watering": 3,
             "image": None,
             "journaling_key": str(key),
+            "last_watering": "2013-04-09T00:00:00",
         }
 
     def test_create_plant_invalid(self, client):
@@ -96,16 +103,20 @@ class TestApp:
     @patch("app.notifications.notifications.Notifications.send")
     def test_water_plant(self, m_send_notification, client, database_test_session):
         key = uuid.uuid4()
-        self._insert_test_plant(database_test_session, {"journaling_key": key})
+        self._insert_test_plant(database_test_session, {
+            "journaling_key": key,
+            "last_watering": datetime.datetime(2012, 5, 5)
+        })
         response = client.post("/plants/1/water")
         assert response.status_code == 200
         assert response.json() == {
             "id": 1,
             "name": "Test plant",
             "description": 'Test Description',
-            "days_until_watering": 0,
+            "days_until_watering": 3,
             "image": None,
             "journaling_key": str(key),
+            "last_watering": "2013-04-09T00:00:00",
         }
         m_send_notification.assert_called_with("The plant Test plant has been watered")
 
@@ -122,6 +133,7 @@ class TestApp:
             "days_until_watering": 3,
             "image": None,
             "journaling_key": str(key),
+            "last_watering": "2013-04-09T00:00:00",
         }, {
             "id": 2,
             "name": "Test plant",
@@ -129,6 +141,7 @@ class TestApp:
             "days_until_watering": 3,
             "image": None,
             "journaling_key": str(key),
+            "last_watering": "2013-04-09T00:00:00",
         }]
 
     def test_delete_non_existing_plant(self, client):
