@@ -1,6 +1,7 @@
 from typing import Optional
 from uuid import UUID
 from pydantic import BaseModel, Field
+import datetime
 
 
 class PlantBase(BaseModel):
@@ -22,3 +23,17 @@ class Plant(PlantBase):
 
     class Config:
         orm_mode = True
+
+
+class JournalEntryBase(BaseModel):
+    message: str = Field(title="Message contents")
+
+
+class JournalEntryCreate(JournalEntryBase):
+    pass
+
+
+class JournalEntry(JournalEntryBase):
+    id: int
+    key: UUID = Field(title="Parent key for the journal entry")
+    timestamp: datetime.datetime = Field(title="Entry timestamp")

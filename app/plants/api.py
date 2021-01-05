@@ -49,10 +49,28 @@ def get_plant(
 @router.get("/{plant_id}/journal")
 def get_journal(
     db: Session = Depends(get_db),
-    plant_id: int = Path(None, title="The ID of the plant to get", ge=1),
+    plant_id: int = Path(
+        None,
+        title="The ID of the plant to get the journal from",
+        ge=1
+    ),
 ):
     plant = _get_plant(db, plant_id)
     return Journaling.get(plant.journaling_key)
+
+
+@router.post(
+    "/{plant_id}/journal",
+    response_model=schemas.JournalEntry,
+    status_code=HTTPStatus.CREATED
+)
+def post_journal_entry(
+    new_entry: schemas.JournalEntryCreate,
+    db: Session = Depends(get_db),
+    plant_id: int = Path(None, title="The ID for the plant", ge=1),
+):
+    plant = _get_plant(db, plant_id)
+    return Journaling.create(plant.journaling_key, new_entry.message)
 
 
 @router.post("/{plant_id}/water", response_model=schemas.Plant)
