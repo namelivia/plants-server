@@ -1,7 +1,6 @@
-from sqlalchemy import Column, Integer, String, DateTime
+from sqlalchemy import Column, Integer, String, DateTime, func
 from sqlalchemy.ext.declarative import declarative_base
 from fastapi_utils.guid_type import GUID
-import datetime
 
 PlantsBase = declarative_base()
 
@@ -16,6 +15,6 @@ class Plant(PlantsBase):
     last_watering = Column(
         DateTime,
         nullable=False,
-        default=datetime.datetime.now()
+        server_default=func.now()
     )
     image = Column(String)
