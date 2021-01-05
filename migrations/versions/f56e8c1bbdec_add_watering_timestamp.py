@@ -1,8 +1,8 @@
 """Add watering timestamp
 
-Revision ID: 7fcff736c054
+Revision ID: f56e8c1bbdec
 Revises: 56a2f2c760af
-Create Date: 2021-01-05 16:06:16.840404
+Create Date: 2021-01-05 16:38:51.982931
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '7fcff736c054'
+revision = 'f56e8c1bbdec'
 down_revision = '56a2f2c760af'
 branch_labels = None
 depends_on = None
