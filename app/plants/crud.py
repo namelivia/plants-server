@@ -58,6 +58,13 @@ def water_plant(db: Session, plant: models.Plant):
         Notifications.send(f"The plant {plant.name} has been watered")
     except Exception as err:
         logger.error(f"Notification could not be sent: {str(err)}")
+    try:
+        Journaling.create(
+            plant.journaling_key,
+            f"A The plant {plant.name} has been watered"
+        )
+    except Exception as err:
+        logger.error(f"Could not add journal entry: {str(err)}")
     logger.info("Plant watered")
     return plant
 
