@@ -79,6 +79,21 @@ class TestApp:
         response = client.get("/plants/99")
         assert response.status_code == 404
 
+    def test_get_current_user(self, client):
+        response = client.get("/users/me")
+        assert response.status_code == 200
+        assert response.json() == {
+            "aud": [
+                "example"
+            ],
+            "email": "user@example.com",
+            "exp": 1237658,
+            "iat": 1237658,
+            "iss": "test.example.com",
+            "nbf": 1237658,
+            "sub": "user",
+        }
+
     def test_get_existing_plant(self, client, database_test_session):
         key = uuid.uuid4()
         self._insert_test_plant(database_test_session, {"journaling_key": key})
