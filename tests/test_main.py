@@ -180,22 +180,3 @@ class TestApp:
         m_get.assert_called_with('http://images-service:80/image/image_path')
         assert response.status_code == 200
         assert response.content == b'image_binary_data'
-
-    @patch("app.notifications.notifications.Notifications.send")
-    def test_sending_watering_reminders(self, m_send_notification, database_test_session):
-        self._insert_test_plant(database_test_session)
-        dry_plant = self._insert_test_plant(database_test_session, {
-            "days_until_watering": 10
-        })
-        another_dry_plant = self._insert_test_plant(database_test_session, {
-            "days_until_watering": 12
-        })
-        self._insert_test_plant(database_test_session, {
-            "days_until_watering": 5
-        })
-        result = Tasks.send_watering_reminders(database_test_session)
-        m_send_notification.assert_called_with(
-            "There are 2 plants that need to be watered"
-        )
-        assert len(result) == 2
-        assert set(result) == set([dry_plant, another_dry_plant])
