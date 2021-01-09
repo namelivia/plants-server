@@ -21,9 +21,7 @@ fileConfig(config.config_file_name)
 # from myapp import mymodel
 # target_metadata = mymodel.Base.metadata
 
-target_metadata = [
-        PlantsBase.metadata
-]
+target_metadata = [PlantsBase.metadata]
 
 # other values from the config, defined by the needs of env.py,
 # can be acquired:
@@ -49,7 +47,7 @@ def run_migrations_offline():
         target_metadata=target_metadata,
         literal_binds=True,
         dialect_opts={"paramstyle": "named"},
-        render_as_batch=True
+        render_as_batch=True,
     )
 
     with context.begin_transaction():
@@ -57,9 +55,9 @@ def run_migrations_offline():
 
 
 def get_url():
-    if os.environ.get('TESTING') == 'True':
-        return os.environ.get('TEST_DATABASE_URL')
-    return os.environ.get('DATABASE_URL')
+    if os.environ.get("TESTING") == "True":
+        return os.environ.get("TEST_DATABASE_URL")
+    return os.environ.get("DATABASE_URL")
 
 
 def run_migrations_online():
@@ -79,9 +77,7 @@ def run_migrations_online():
 
     with connectable.connect() as connection:
         context.configure(
-            connection=connection,
-            target_metadata=target_metadata,
-            render_as_batch=True
+            connection=connection, target_metadata=target_metadata, render_as_batch=True
         )
 
         with context.begin_transaction():
