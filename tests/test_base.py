@@ -32,14 +32,18 @@ def database_test_session():
     yield from get_test_db()
 
 
-@pytest.fixture(scope="session", autouse=True)
-def create_test_database():
+def _drop_database_safely(url: str):
     if database_exists(url):
         drop_database(url)
+
+
+@pytest.fixture(scope="session", autouse=True)
+def create_test_database():
+    _drop_database_safely(url)
     create_database(url)
     app.dependency_overrides[get_db] = get_test_db
     yield
-    drop_database(url)
+    _drop_database_safely(url)
 
 
 @pytest.fixture(scope="module")
