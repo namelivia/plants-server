@@ -5,15 +5,12 @@ from app.journaling.journaling import Journaling
 
 
 class TestServices:
-
     @patch("requests.post")
     def test_sending_a_notification(self, m_post):
         Notifications.send("Test message")
         m_post.assert_called_with(
-            url='http://notifications-service:80',
-            json={
-                'message': 'Test message'
-            },
+            url="http://notifications-service:80",
+            json={"message": "Test message"},
         )
 
     @patch("requests.post")
@@ -22,10 +19,10 @@ class TestServices:
         message = "Test message"
         Journaling.create(key, message)
         m_post.assert_called_with(
-            url='http://journaling-service:80/new',
+            url="http://journaling-service:80/new",
             json={
-                'key': str(key),
-                'message': message,
+                "key": str(key),
+                "message": message,
             },
         )
 
@@ -40,4 +37,4 @@ class TestServices:
         m_get.assert_called_with(
             url=f"http://journaling-service:80/{str(key)}/all",
         )
-        assert response['data'] == 'journaling_data'
+        assert response["data"] == "journaling_data"

@@ -11,14 +11,13 @@ import datetime
 from freezegun import freeze_time
 
 
-@freeze_time('2013-04-09')
+@freeze_time("2013-04-09")
 class TestApp:
-
     def _insert_test_plant(self, session, plant: dict = {}):
         key = uuid.uuid4()
         data = {
-            "name": 'Test plant',
-            "description": 'Test Description',
+            "name": "Test plant",
+            "description": "Test Description",
             "days_until_watering": 3,
             "journaling_key": key,
             "last_watering": datetime.datetime.now(),
@@ -30,17 +29,17 @@ class TestApp:
         return db_plant
 
     @patch("app.notifications.notifications.Notifications.send")
-    def test_sending_watering_reminders(self, m_send_notification, database_test_session):
+    def test_sending_watering_reminders(
+        self, m_send_notification, database_test_session
+    ):
         self._insert_test_plant(database_test_session)
-        dry_plant = self._insert_test_plant(database_test_session, {
-            "days_until_watering": 10
-        })
-        another_dry_plant = self._insert_test_plant(database_test_session, {
-            "days_until_watering": 12
-        })
-        self._insert_test_plant(database_test_session, {
-            "days_until_watering": 5
-        })
+        dry_plant = self._insert_test_plant(
+            database_test_session, {"days_until_watering": 10}
+        )
+        another_dry_plant = self._insert_test_plant(
+            database_test_session, {"days_until_watering": 12}
+        )
+        self._insert_test_plant(database_test_session, {"days_until_watering": 5})
         result = Tasks.send_watering_reminders(database_test_session)
         m_send_notification.assert_called_with(
             "There are 2 plants that need to be watered"
