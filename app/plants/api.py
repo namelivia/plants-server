@@ -1,10 +1,4 @@
-from fastapi import (
-    APIRouter,
-    Path,
-    HTTPException,
-    Depends,
-    Response
-)
+from fastapi import APIRouter, Path, HTTPException, Depends, Response
 from http import HTTPStatus
 from app.dependencies import get_db
 from . import crud, schemas
@@ -12,18 +6,11 @@ from typing import Optional, List
 from sqlalchemy.orm import Session
 from app.journaling.journaling import Journaling
 
-router = APIRouter(
-    prefix="/plants",
-    dependencies=[Depends(get_db)]
-)
+router = APIRouter(prefix="/plants", dependencies=[Depends(get_db)])
 
 
 @router.get("", response_model=List[schemas.Plant])
-def plants(
-    db: Session = Depends(get_db),
-    skip: int = 0,
-    limit: int = 10
-):
+def plants(db: Session = Depends(get_db), skip: int = 0, limit: int = 10):
     plants = crud.get_plants(db)
     return plants
 
@@ -31,17 +18,14 @@ def plants(
 def _get_plant(db: Session, plant_id: int):
     db_plant = crud.get_plant(db, plant_id=plant_id)
     if db_plant is None:
-        raise HTTPException(
-            status_code=HTTPStatus.NOT_FOUND,
-            detail="Plant not found"
-        )
+        raise HTTPException(status_code=HTTPStatus.NOT_FOUND, detail="Plant not found")
     return db_plant
 
 
 @router.get("/{plant_id}", response_model=schemas.Plant)
 def get_plant(
     plant_id: int = Path(None, title="The ID of the plant to get", ge=1),
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
 ):
     return _get_plant(db, plant_id)
 
@@ -50,9 +34,7 @@ def get_plant(
 def get_journal(
     db: Session = Depends(get_db),
     plant_id: int = Path(
-        None,
-        title="The ID of the plant to get the journal from",
-        ge=1
+        None, title="The ID of the plant to get the journal from", ge=1
     ),
 ):
     plant = _get_plant(db, plant_id)
@@ -62,7 +44,7 @@ def get_journal(
 @router.post(
     "/{plant_id}/journal",
     response_model=schemas.JournalEntry,
-    status_code=HTTPStatus.CREATED
+    status_code=HTTPStatus.CREATED,
 )
 def post_journal_entry(
     new_entry: schemas.JournalEntryCreate,
@@ -76,31 +58,21 @@ def post_journal_entry(
 @router.post("/{plant_id}/water", response_model=schemas.Plant)
 def water_plant(
     plant_id: int = Path(None, title="The ID of the plant to get", ge=1),
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
 ):
     plant = _get_plant(db, plant_id)
     return crud.water_plant(db, plant)
 
 
-@router.post(
-    "",
-    response_model=schemas.Plant,
-    status_code=HTTPStatus.CREATED
-)
-def create_plant(
-    plant: schemas.PlantCreate,
-    db: Session = Depends(get_db)
-):
+@router.post("", response_model=schemas.Plant, status_code=HTTPStatus.CREATED)
+def create_plant(plant: schemas.PlantCreate, db: Session = Depends(get_db)):
     return crud.create_plant(db, plant)
 
 
-@router.put(
-    "/{plant_id}",
-    response_model=schemas.Plant
-)
+@router.put("/{plant_id}", response_model=schemas.Plant)
 async def update_plant(
     plant_id: int = Path(None, title="The ID of the plant to update", ge=1),
-    plant: Optional[schemas.Plant] = None
+    plant: Optional[schemas.Plant] = None,
 ):
     result = {"plant": plant}
     if plant:
@@ -111,7 +83,7 @@ async def update_plant(
 @router.delete("/{plant_id}")
 async def delete_plant(
     plant_id: int = Path(None, title="The ID of the plant to remove", ge=1),
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
 ):
     crud.delete_plant(db, _get_plant(db, plant_id))
     return Response(status_code=HTTPStatus.NO_CONTENT)

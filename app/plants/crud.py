@@ -24,22 +24,20 @@ def create_plant(db: Session, plant: schemas.PlantCreate):
         **plant.dict(),
         days_until_watering=7,  # TODO: This will come from an API
         last_watering=datetime.datetime.now(),
-        journaling_key=uuid.uuid4()
+        journaling_key=uuid.uuid4(),
     )
     db.add(db_plant)
     db.commit()
     db.refresh(db_plant)
     logger.info("New plant created")
     try:
-        Notifications.send(
-            f"A new plant called {db_plant.name} has been created"
-        )
+        Notifications.send(f"A new plant called {db_plant.name} has been created")
     except Exception as err:
         logger.error(f"Notification could not be sent: {str(err)}")
     try:
         Journaling.create(
             db_plant.journaling_key,
-            f"A new plant called {db_plant.name} has been created"
+            f"A new plant called {db_plant.name} has been created",
         )
     except Exception as err:
         logger.error(f"Could not add journal entry: {str(err)}")
@@ -62,8 +60,7 @@ def water_plant(db: Session, plant: models.Plant):
         logger.error(f"Notification could not be sent: {str(err)}")
     try:
         Journaling.create(
-            plant.journaling_key,
-            f"A The plant {plant.name} has been watered"
+            plant.journaling_key, f"A The plant {plant.name} has been watered"
         )
     except Exception as err:
         logger.error(f"Could not add journal entry: {str(err)}")
@@ -72,7 +69,12 @@ def water_plant(db: Session, plant: models.Plant):
 
 
 def get_plants_to_be_watered(db: Session):
-    return db.query(models.Plant).filter(
-        # TODO: This will compare the last date
-        models.Plant.days_until_watering > 5
-    ).all()
+    return (
+        db.query(models.Plant)
+        .filter(
+            # TODO: This will compare the last date
+            models.Plant.days_until_watering
+            > 5
+        )
+        .all()
+    )

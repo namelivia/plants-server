@@ -13,10 +13,7 @@ app = FastAPI()
 
 logging.basicConfig(stream=sys.stdout, level=logging.INFO)
 
-origins = [
-    'http://localhost:8080',
-    'http://plants.namelivia.com'
-]
+origins = ["http://localhost:8080", "http://plants.namelivia.com"]
 
 app.add_middleware(
     CORSMiddleware,
@@ -26,8 +23,11 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-[app.include_router(router) for router in [
-    plants,
-    images,
-    users,
-]]
+[
+    app.include_router(router)
+    for router in [
+        plants,
+        images,
+        users,
+    ]
+]

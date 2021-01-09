@@ -10,7 +10,6 @@ logger = logging.getLogger(__name__)
 
 
 class Tasks:
-
     @staticmethod
     def send_watering_reminders(db: Session):
         logger.info(f"Checking for watering reminders")

@@ -7,17 +7,12 @@ logger = logging.getLogger(__name__)
 
 
 class Journaling:
-
     @staticmethod
     def create(key: UUID, message: str):
         logger.info("Creating journal entry")
-        data = {
-            'message': message,
-            'key': str(key)
-        }
+        data = {"message": message, "key": str(key)}
         response = requests.post(
-            url=os.getenv("JOURNALING_SERVICE_ENDPOINT") + '/new',
-            json=data
+            url=os.getenv("JOURNALING_SERVICE_ENDPOINT") + "/new", json=data
         )
         logger.info(response.text)
 
