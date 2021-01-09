@@ -9,6 +9,8 @@ mock = "*"
 pytest-cov = "*"
 pudb = "*"
 codecov = "*"
+black = "*"
+pre-commit = "*"
 
 [packages]
 fastapi = "*"
@@ -27,9 +29,13 @@ pyjwt = "*"
 cryptography = "*"
 fastapi-utils = "*"
 pytest-freezegun = "*"
+black = "*"
 
 [requires]
 python_version = "3.8"
 
 [scripts]
 scheduler = "python ./scripts/scheduler.py"
+
+[pipenv]
+allow_prereleases = true
