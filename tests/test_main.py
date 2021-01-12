@@ -1,3 +1,4 @@
+import pytest
 from mock import patch, Mock
 import uuid
 from .test_base import (
@@ -79,6 +80,7 @@ class TestApp:
         response = client.get("/plants/99")
         assert response.status_code == 404
 
+    @pytest.mark.skip(reason="no longer valid")
     def test_get_current_user(self, client):
         response = client.get("/users/me")
         assert response.status_code == 200
