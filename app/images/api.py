@@ -32,10 +32,13 @@ async def get_image(
     extra: str,
 ):
     logger.info("Retrieving image")
-    logger.info(image_path)
     # TODO: service to return scaled images depending on the frontend needs
-    originalUrl = os.getenv("IMAGES_SERVICE_ENDPOINT") + "/image/" + image_path
-    image = requests.get(
-        os.getenv("IMAGES_SERVICE_ENDPOINT") + "/unsafe/fit-in/1024x768/" + originalUrl
+    original_url = os.getenv("IMAGES_SERVICE_ENDPOINT") + "/image/" + image_path
+    logger.info(original_url)
+    scaled_url = (
+        os.getenv("IMAGES_SERVICE_ENDPOINT") + "/unsafe/fit-in/1024x768/" + original_url
     )
+    logger.info(scaled_url)
+    image = requests.get(scaled_url)
+    logger.info(image.status_code)
     return Response(content=image.content)
