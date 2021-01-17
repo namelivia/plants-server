@@ -20,7 +20,7 @@ async def post_image(media: UploadFile = File(...)):
     logger.info("Uploading image")
     async with httpx.AsyncClient() as client:
         response = await client.post(
-            url=os.getenv("IMAGES_SERVICE_ENDPOINT") + "/image/",
+            url=os.getenv("IMAGES_SERVICE_ENDPOINT") + "/image",
             files={"media": media.file},
         )
     return schemas.Image(location=response.headers["location"])
