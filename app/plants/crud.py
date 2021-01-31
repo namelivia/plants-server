@@ -44,6 +44,26 @@ def create_plant(db: Session, plant: schemas.PlantCreate):
     return db_plant
 
 
+def update_plant(db: Session, plant_id: int, new_plant_data: schemas.PlantUpdate):
+    plants = db.query(models.Plant).filter(models.Plant.id == plant_id)
+    plants.update(new_plant_data, synchronize_session=False)
+    db.commit()
+    plant = plants.first()
+    logger.info("Plant updated")
+    try:
+        Notifications.send(f"The plant {plant.name} has been updated")
+    except Exception as err:
+        logger.error(f"Notification could not be sent: {str(err)}")
+    try:
+        Journaling.create(
+            plant.journaling_key,
+            f"The plant {plant.name} has been updated",
+        )
+    except Exception as err:
+        logger.error(f"Could not add journal entry: {str(err)}")
+    return plant
+
+
 def delete_plant(db: Session, plant: models.Plant):
     db.delete(plant)
     db.commit()

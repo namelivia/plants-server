@@ -173,6 +173,30 @@ class TestApp:
         response = client.post("/image")
         assert response.status_code == 422
 
+    def test_updating_plant(self, client, database_test_session):
+        key = uuid.uuid4()
+        original_plant = self._insert_test_plant(
+            database_test_session, {"name": "Some name", "journaling_key": key}
+        )
+        response = client.put(
+            "/plants/1",
+            json={
+                "name": "Updated name",
+                "description": original_plant.description,
+                "journaling_key": str(key),
+            },
+        )
+        assert response.status_code == 200
+        assert response.json() == {
+            "id": 1,
+            "name": "Updated name",
+            "description": "Test Description",
+            "last_watering": "2013-04-09T00:00:00",
+            "days_until_watering": 3,
+            "image": None,
+            "journaling_key": str(key),
+        }
+
     @patch("requests.get")
     def test_get_image(self, m_get, client):
         m_get.return_value = Mock()

@@ -2,7 +2,7 @@ from fastapi import APIRouter, Path, HTTPException, Depends, Response
 from http import HTTPStatus
 from app.dependencies import get_db
 from . import crud, schemas
-from typing import Optional, List
+from typing import List
 from sqlalchemy.orm import Session
 from app.journaling.journaling import Journaling
 
@@ -69,15 +69,13 @@ def create_plant(plant: schemas.PlantCreate, db: Session = Depends(get_db)):
     return crud.create_plant(db, plant)
 
 
-@router.put("/{plant_id}", response_model=schemas.Plant)
-async def update_plant(
-    plant_id: int = Path(None, title="The ID of the plant to update", ge=1),
-    plant: Optional[schemas.Plant] = None,
+@router.put("/{plant_id}", response_model=schemas.Plant, status_code=HTTPStatus.OK)
+def update_plant(
+    new_plant_data: schemas.PlantUpdate,
+    db: Session = Depends(get_db),
+    plant_id: int = Path(None, title="The ID for the plant to update", ge=1),
 ):
-    result = {"plant": plant}
-    if plant:
-        result.update({"updated_plant": plant})
-    return schemas.Plant(name="test")
+    return crud.update_plant(db, plant_id, new_plant_data)
 
 
 @router.delete("/{plant_id}")

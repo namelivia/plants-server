@@ -14,6 +14,10 @@ class PlantCreate(PlantBase):
     pass
 
 
+class PlantUpdate(PlantBase):
+    pass
+
+
 class Plant(PlantBase):
     id: int
     days_until_watering: int = Field(title="Days until the next plant watering")
