@@ -18,11 +18,10 @@
     "default": {
         "alembic": {
             "hashes": [
-                "sha256:a4de8d3525a95a96d59342e14b95cab5956c25b0907dce1549bb4e3e7958f4c2",
-                "sha256:c057488cc8ac7c4d06025ea3907e1a4dd07af70376fa149cf6bd2bc11b43076f"
+                "sha256:04608b6904a6e6bd1af83e1a48f73f50ba214aeddef44b92d498df33818654a8"
             ],
             "index": "pypi",
-            "version": "==1.5.2"
+            "version": "==1.5.3"
         },
         "appdirs": {
             "hashes": [
@@ -167,10 +166,10 @@
         },
         "httpcore": {
             "hashes": [
-                "sha256:420700af11db658c782f7e8fda34f9dcd95e3ee93944dd97d78cb70247e0cd06",
-                "sha256:dd1d762d4f7c2702149d06be2597c35fb154c5eff9789a8c5823fbcf4d2978d6"
+                "sha256:37ae835fb370049b2030c3290e12ed298bf1473c41bb72ca4aa78681eba9b7c9",
+                "sha256:93e822cd16c32016b414b789aeff4e855d0ccbfc51df563ee34d4dbadbb3bcdc"
             ],
-            "version": "==0.12.2"
+            "version": "==0.12.3"
         },
         "httptools": {
             "hashes": [
@@ -262,10 +261,10 @@
         },
         "packaging": {
             "hashes": [
-                "sha256:24e0da08660a87484d1602c30bb4902d74816b6985b93de36926f5bc95741858",
-                "sha256:78598185a7008a470d64526a8059de9aaa449238f280fc9eb6b13ba6c4109093"
+                "sha256:5b327ac1320dc863dca72f4514ecc086f31186744b84a230374cc1fd776feae5",
+                "sha256:67714da7f7bc052e064859c05c595155bd1ee9f69f76557e21f051443c20947a"
             ],
-            "version": "==20.8"
+            "version": "==20.9"
         },
         "pathspec": {
             "hashes": [
@@ -780,10 +779,10 @@
         },
         "packaging": {
             "hashes": [
-                "sha256:24e0da08660a87484d1602c30bb4902d74816b6985b93de36926f5bc95741858",
-                "sha256:78598185a7008a470d64526a8059de9aaa449238f280fc9eb6b13ba6c4109093"
+                "sha256:5b327ac1320dc863dca72f4514ecc086f31186744b84a230374cc1fd776feae5",
+                "sha256:67714da7f7bc052e064859c05c595155bd1ee9f69f76557e21f051443c20947a"
             ],
-            "version": "==20.8"
+            "version": "==20.9"
         },
         "pathspec": {
             "hashes": [
@@ -1002,10 +1001,10 @@
         },
         "virtualenv": {
             "hashes": [
-                "sha256:219ee956e38b08e32d5639289aaa5bd190cfbe7dafcb8fa65407fca08e808f9c",
-                "sha256:227a8fed626f2f20a6cdb0870054989f82dd27b2560a911935ba905a2a5e0034"
+                "sha256:3e445890d7f58a066080885c48144268f85b456b788ad849a60f239eb04932af",
+                "sha256:f61234eee61c817a7d33e3a21642bd642f0825d3a56107b2a8deb067b03bf1e6"
             ],
-            "version": "==20.4.0"
+            "version": "==20.4.1"
         }
     }
 }
