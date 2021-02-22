@@ -24,7 +24,7 @@ services:
       NOTIFICATIONS_SERVICE_ENDPOINT: "http://notifications-service:80"
       JOURNALING_SERVICE_ENDPOINT: "http://journaling-service:80"
       IMAGES_SERVICE_ENDPOINT: "http://images-service:80"
-      JWK_ENDPOINT: "https://authenticate.localhost.pomerium.io/.well-known/pomerium/jwks.json"
+      USER_INFO_SERVICE_ENDPOINT: "http://user-info-service:80"
     command: [
         "pipenv",
         "run",
