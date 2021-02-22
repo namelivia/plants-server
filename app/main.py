@@ -1,13 +1,10 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from .database import engine, Base
 from app.plants.api import router as plants
 from app.images.api import router as images
 from app.users.api import router as users
 import logging
 import sys
-
-Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
 

@@ -1,11 +1,9 @@
 from sqlalchemy import Column, Integer, String, DateTime, func
-from sqlalchemy.ext.declarative import declarative_base
 from fastapi_utils.guid_type import GUID
+from app.database import Base
 
-PlantsBase = declarative_base()
 
-
-class Plant(PlantsBase):
+class Plant(Base):
     __tablename__ = "plants"
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String, nullable=False)

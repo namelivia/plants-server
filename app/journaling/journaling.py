@@ -22,5 +22,5 @@ class Journaling:
         response = requests.get(
             url=os.getenv("JOURNALING_SERVICE_ENDPOINT") + f"/{str(key)}/all",
         )
-        logger.info(response.text)
+        response.raise_for_status()
         return response.json()

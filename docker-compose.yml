@@ -43,8 +43,8 @@ services:
     container_name: plants-server-database
     restart: unless-stopped
     tty: true
-    ports:
-      - "5432:5432"
+    expose:
+      - "5432"
     environment:
       POSTGRES_DB: plants
       POSTGRES_USER: user
