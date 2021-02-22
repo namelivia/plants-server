@@ -19,7 +19,7 @@ services:
     volumes:
       - ./:/app
     environment:
-      DATABASE_URL: "postgresql://user:password@database/plants"
+      DATABASE_URL: "postgresql://user:password@plants-server-database/plants"
       TEST_DATABASE_URL: "sqlite:///./test.db"
       NOTIFICATIONS_SERVICE_ENDPOINT: "http://notifications-service:80"
       JOURNALING_SERVICE_ENDPOINT: "http://journaling-service:80"
@@ -34,8 +34,6 @@ services:
         "--host=0.0.0.0",
         "--port=80"
     ]
-    networks:
-      - app-network
 
   #Postgres Service
   database:
@@ -49,8 +47,6 @@ services:
       POSTGRES_DB: plants
       POSTGRES_USER: user
       POSTGRES_PASSWORD: password
-    networks:
-      - app-network
 
   #Pomerium proxy
   plants-auth-proxy:
@@ -64,25 +60,9 @@ services:
       - ./pomerium/config.yaml:/pomerium/config.yaml
       - ./certs/localhost.crt:/pomerium/cert.pem:ro
       - ./certs/localhost.key:/pomerium/privkey.pem:ro
-    networks:
-      - app-network
-
-  #Images service
-  images-service:
-    image: minimalcompact/thumbor:latest
-    container_name: images-service
-    restart: unless-stopped
-    tty: true
-    ports:
-      - "80:80"
-    networks:
-      - app-network
-    environment:
-        UPLOAD_ENABLED: "True"
-        LOG_LEVEL: "debug"
-        ALOW_UNSAFE_URL: "True"
 
 #Docker Networks
 networks:
-  app-network:
-    driver: bridge
+  default:
+    external:
+      name: local-development-network
