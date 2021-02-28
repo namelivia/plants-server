@@ -1,2 +1,2 @@
 #!/bin/bash
-docker exec plants-server-app pipenv run pytest
+docker exec -it plants-server-app pipenv run pytest
