@@ -4,6 +4,7 @@ from fastapi import (
     UploadFile,
     Response,
 )
+from typing import Optional
 import httpx
 import requests
 import os
@@ -30,13 +31,16 @@ async def post_image(media: UploadFile = File(...)):
 async def get_image(
     image_path: str,
     extra: str,
+    width: Optional[int] = None,
 ):
-    logger.info("Retrieving image")
     # TODO: service to return scaled images depending on the frontend needs
     original_url = os.getenv("IMAGES_SERVICE_ENDPOINT") + "/image/" + image_path
+    image_width = width if width is not None else 1024
     logger.info(original_url)
     scaled_url = (
-        os.getenv("IMAGES_SERVICE_ENDPOINT") + "/unsafe/fit-in/1024x768/" + original_url
+        os.getenv("IMAGES_SERVICE_ENDPOINT")
+        + f"/unsafe/fit-in/{image_width}x0/"
+        + original_url
     )
     logger.info(scaled_url)
     image = requests.get(scaled_url)
