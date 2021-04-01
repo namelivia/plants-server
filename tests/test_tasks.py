@@ -40,6 +40,10 @@ class TestApp:
         another_dry_plant = self._insert_test_plant(
             database_test_session, {"days_until_watering": 12}
         )
+        # Dead plant
+        self._insert_test_plant(
+            database_test_session, {"days_until_watering": 12, "alive": False}
+        )
         self._insert_test_plant(database_test_session, {"days_until_watering": 5})
         result = Tasks.send_watering_reminders(database_test_session)
         m_send_notification.assert_called_with(

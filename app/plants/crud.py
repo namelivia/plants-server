@@ -96,6 +96,7 @@ def water_plant(db: Session, plant: models.Plant):
 def get_plants_to_be_watered(db: Session):
     return (
         db.query(models.Plant)
+        .filter(models.Plant.alive == True)
         .filter(
             # TODO: This will compare the last date
             models.Plant.days_until_watering
