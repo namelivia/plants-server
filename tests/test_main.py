@@ -152,6 +152,27 @@ class TestApp:
         }
         m_send_notification.assert_called_with("The plant Test plant has been watered")
 
+    @patch("app.notifications.notifications.Notifications.send")
+    def test_kill_plant(self, m_send_notification, client, database_test_session):
+        key = uuid.uuid4()
+        self._insert_test_plant(
+            database_test_session,
+            {"journaling_key": key},
+        )
+        response = client.post("/plants/1/kill")
+        assert response.status_code == 200
+        assert response.json() == {
+            "id": 1,
+            "name": "Test plant",
+            "description": "Test Description",
+            "days_until_watering": 3,
+            "image": None,
+            "journaling_key": str(key),
+            "alive": False,
+            "last_watering": "2013-04-09T00:00:00",
+        }
+        m_send_notification.assert_called_with("The plant Test plant is now dead")
+
     def test_get_all_plants(self, client, database_test_session):
         key = uuid.uuid4()
         self._insert_test_plant(database_test_session, {"journaling_key": key})

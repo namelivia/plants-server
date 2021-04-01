@@ -70,6 +70,15 @@ def water_plant(
     return crud.water_plant(db, plant)
 
 
+@router.post("/{plant_id}/kill", response_model=schemas.Plant)
+def water_plant(
+    plant_id: int = Path(None, title="The ID of the plant to kill", ge=1),
+    db: Session = Depends(get_db),
+):
+    plant = _get_plant(db, plant_id)
+    return crud.kill_plant(db, plant)
+
+
 @router.post("", response_model=schemas.Plant, status_code=HTTPStatus.CREATED)
 def create_plant(plant: schemas.PlantCreate, db: Session = Depends(get_db)):
     return crud.create_plant(db, plant)

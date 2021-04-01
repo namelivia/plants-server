@@ -93,6 +93,22 @@ def water_plant(db: Session, plant: models.Plant):
     return plant
 
 
+def kill_plant(db: Session, plant: models.Plant):
+    plant.alive = False
+    db.commit()
+    db.refresh(plant)
+    try:
+        Notifications.send(f"The plant {plant.name} is now dead")
+    except Exception as err:
+        logger.error(f"Notification could not be sent: {str(err)}")
+    try:
+        Journaling.create(plant.journaling_key, f"A The plant {plant.name} has died")
+    except Exception as err:
+        logger.error(f"Could not add journal entry: {str(err)}")
+    logger.info("Plant killed")
+    return plant
+
+
 def get_plants_to_be_watered(db: Session):
     return (
         db.query(models.Plant)
