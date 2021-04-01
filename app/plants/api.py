@@ -15,6 +15,12 @@ def plants(db: Session = Depends(get_db), skip: int = 0, limit: int = 10):
     return plants
 
 
+@router.get("/dead", response_model=List[schemas.Plant])
+def plants(db: Session = Depends(get_db), skip: int = 0, limit: int = 10):
+    plants = crud.get_dead_plants(db)
+    return plants
+
+
 def _get_plant(db: Session, plant_id: int):
     db_plant = crud.get_plant(db, plant_id=plant_id)
     if db_plant is None:

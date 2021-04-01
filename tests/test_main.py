@@ -22,6 +22,7 @@ class TestApp:
             "description": "Test Description",
             "days_until_watering": 3,
             "journaling_key": key,
+            "alive": True,
             "last_watering": datetime.datetime.now(),
         }
         data.update(plant)
@@ -50,6 +51,7 @@ class TestApp:
             "days_until_watering": 7,
             "image": None,
             "journaling_key": key,
+            "alive": True,
             "last_watering": "2013-04-09T00:00:00",
         }
         m_send_notification.assert_called_with(
@@ -70,6 +72,7 @@ class TestApp:
             "days_until_watering": 7,
             "image": None,
             "journaling_key": key,
+            "alive": True,
             "last_watering": "2013-04-09T00:00:00",
         }
         m_send_notification.assert_called_with(
@@ -120,6 +123,7 @@ class TestApp:
             "days_until_watering": 3,
             "image": None,
             "journaling_key": str(key),
+            "alive": True,
             "last_watering": "2013-04-09T00:00:00",
         }
 
@@ -143,6 +147,7 @@ class TestApp:
             "days_until_watering": 3,
             "image": None,
             "journaling_key": str(key),
+            "alive": True,
             "last_watering": "2013-04-09T00:00:00",
         }
         m_send_notification.assert_called_with("The plant Test plant has been watered")
@@ -151,6 +156,10 @@ class TestApp:
         key = uuid.uuid4()
         self._insert_test_plant(database_test_session, {"journaling_key": key})
         self._insert_test_plant(database_test_session, {"journaling_key": key})
+        # This one will be excluded
+        self._insert_test_plant(
+            database_test_session, {"alive": False, "journaling_key": key}
+        )
         response = client.get("/plants")
         assert response.status_code == 200
         assert response.json() == [
@@ -161,6 +170,7 @@ class TestApp:
                 "days_until_watering": 3,
                 "image": None,
                 "journaling_key": str(key),
+                "alive": True,
                 "last_watering": "2013-04-09T00:00:00",
             },
             {
@@ -170,6 +180,30 @@ class TestApp:
                 "days_until_watering": 3,
                 "image": None,
                 "journaling_key": str(key),
+                "alive": True,
+                "last_watering": "2013-04-09T00:00:00",
+            },
+        ]
+
+    def test_get_dead_plants(self, client, database_test_session):
+        key = uuid.uuid4()
+        self._insert_test_plant(database_test_session, {"journaling_key": key})
+        self._insert_test_plant(database_test_session, {"journaling_key": key})
+        # Only this one will be included
+        self._insert_test_plant(
+            database_test_session, {"alive": False, "journaling_key": key}
+        )
+        response = client.get("/plants/dead")
+        assert response.status_code == 200
+        assert response.json() == [
+            {
+                "id": 3,
+                "name": "Test plant",
+                "description": "Test Description",
+                "days_until_watering": 3,
+                "image": None,
+                "journaling_key": str(key),
+                "alive": False,
                 "last_watering": "2013-04-09T00:00:00",
             },
         ]
@@ -207,6 +241,7 @@ class TestApp:
             "description": "Test Description",
             "last_watering": "2013-04-09T00:00:00",
             "days_until_watering": 3,
+            "alive": True,
             "image": None,
             "journaling_key": str(key),
         }

@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, DateTime, func
+from sqlalchemy import Column, Integer, String, DateTime, func, Boolean
 from fastapi_utils.guid_type import GUID
 from app.database import Base
 
@@ -11,4 +11,5 @@ class Plant(Base):
     description = Column(String)
     days_until_watering = Column(Integer, nullable=False)
     last_watering = Column(DateTime, nullable=False, server_default=func.now())
+    alive = Column(Boolean, nullable=False)
     image = Column(String)

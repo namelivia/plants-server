@@ -16,7 +16,11 @@ def get_plant(db: Session, plant_id: int):
 
 # TODO: skip and limit
 def get_plants(db: Session):
-    return db.query(models.Plant).all()
+    return db.query(models.Plant).filter(models.Plant.alive == True).all()
+
+
+def get_dead_plants(db: Session):
+    return db.query(models.Plant).filter(models.Plant.alive == False).all()
 
 
 def create_plant(db: Session, plant: schemas.PlantCreate):
@@ -25,6 +29,7 @@ def create_plant(db: Session, plant: schemas.PlantCreate):
         days_until_watering=7,  # TODO: This will come from an API
         last_watering=datetime.datetime.now(),
         journaling_key=uuid.uuid4(),
+        alive=True,
     )
     db.add(db_plant)
     db.commit()

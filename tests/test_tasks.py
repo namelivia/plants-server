@@ -20,6 +20,7 @@ class TestApp:
             "description": "Test Description",
             "days_until_watering": 3,
             "journaling_key": key,
+            "alive": True,
             "last_watering": datetime.datetime.now(),
         }
         data.update(plant)
