@@ -51,7 +51,7 @@ def create_plant(db: Session, plant: schemas.PlantCreate):
 
 def update_plant(db: Session, plant_id: int, new_plant_data: schemas.PlantUpdate):
     plants = db.query(models.Plant).filter(models.Plant.id == plant_id)
-    plants.update(new_plant_data, synchronize_session=False)
+    plants.update(new_plant_data.dict(), synchronize_session=False)
     db.commit()
     plant = plants.first()
     logger.info("Plant updated")
