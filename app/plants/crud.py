@@ -10,17 +10,42 @@ from app.journaling.journaling import Journaling
 logger = logging.getLogger(__name__)
 
 
+def _calculate_days_until_next_watering(last_watering: datetime, water_every: int) -> int:
+    next_watering_day = last_watering + datetime.timedelta(days=water_every)
+    today = datetime.datetime.now()
+    until_next_watering = next_watering_day - today
+    return until_next_watering.days
+
+
 def get_plant(db: Session, plant_id: int):
-    return db.query(models.Plant).filter(models.Plant.id == plant_id).first()
+    plant = db.query(models.Plant).filter(models.Plant.id == plant_id).first()
+    if plant is not None:
+        plant.until_next_watering = _calculate_days_until_next_watering(
+            plant.last_watering,
+            plant.water_every,
+        )
+    return plant
 
 
 # TODO: skip and limit
 def get_plants(db: Session):
-    return db.query(models.Plant).filter(models.Plant.alive == True).all()
+    plants = db.query(models.Plant).filter(models.Plant.alive == True).all()
+    for plant in plants:
+        plant.until_next_watering = _calculate_days_until_next_watering(
+            plant.last_watering,
+            plant.water_every,
+        )
+    return plants
 
 
 def get_dead_plants(db: Session):
-    return db.query(models.Plant).filter(models.Plant.alive == False).all()
+    plants = db.query(models.Plant).filter(models.Plant.alive == False).all()
+    for plant in plants:
+        plant.until_next_watering = _calculate_days_until_next_watering(
+            plant.last_watering,
+            plant.water_every,
+        )
+    return plants
 
 
 def create_plant(db: Session, plant: schemas.PlantCreate):
@@ -34,6 +59,10 @@ def create_plant(db: Session, plant: schemas.PlantCreate):
     db.add(db_plant)
     db.commit()
     db.refresh(db_plant)
+    db_plant.until_next_watering = _calculate_days_until_next_watering(
+        db_plant.last_watering,
+        db_plant.water_every,
+    )
     logger.info("New plant created")
     try:
         Notifications.send(f"A new plant called {db_plant.name} has been created")
@@ -54,6 +83,10 @@ def update_plant(db: Session, plant_id: int, new_plant_data: schemas.PlantUpdate
     plants.update(new_plant_data.dict(), synchronize_session=False)
     db.commit()
     plant = plants.first()
+    plant.until_next_watering = _calculate_days_until_next_watering(
+        plant.last_watering,
+        plant.water_every,
+    )
     logger.info("Plant updated")
     try:
         Notifications.send(f"The plant {plant.name} has been updated")
@@ -90,6 +123,10 @@ def water_plant(db: Session, plant: models.Plant):
     except Exception as err:
         logger.error(f"Could not add journal entry: {str(err)}")
     logger.info("Plant watered")
+    plant.until_next_watering = _calculate_days_until_next_watering(
+        plant.last_watering,
+        plant.water_every,
+    )
     return plant
 
 

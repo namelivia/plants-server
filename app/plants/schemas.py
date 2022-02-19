@@ -20,7 +20,8 @@ class PlantUpdate(PlantBase):
 
 class Plant(PlantBase):
     id: int
-    water_every: int = Field(title="Days until the next plant watering")
+    water_every: int = Field(title="Number of days between each watering")
+    until_next_watering: int = Field(title="Days until the next plant watering")
     journaling_key: UUID = Field(title="Parent key for the journal entry")
     last_watering: datetime.datetime = Field(title="Time of the last watering")
     alive: bool = Field(title="If the plant is alive")
