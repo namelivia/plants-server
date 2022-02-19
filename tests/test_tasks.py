@@ -18,7 +18,7 @@ class TestApp:
         data = {
             "name": "Test plant",
             "description": "Test Description",
-            "days_until_watering": 3,
+            "water_every": 3,
             "journaling_key": key,
             "alive": True,
             "last_watering": datetime.datetime.now(),
@@ -35,16 +35,16 @@ class TestApp:
     ):
         self._insert_test_plant(database_test_session)
         dry_plant = self._insert_test_plant(
-            database_test_session, {"days_until_watering": 10}
+            database_test_session, {"water_every": 10}
         )
         another_dry_plant = self._insert_test_plant(
-            database_test_session, {"days_until_watering": 12}
+            database_test_session, {"water_every": 12}
         )
         # Dead plant
         self._insert_test_plant(
-            database_test_session, {"days_until_watering": 12, "alive": False}
+            database_test_session, {"water_every": 12, "alive": False}
         )
-        self._insert_test_plant(database_test_session, {"days_until_watering": 5})
+        self._insert_test_plant(database_test_session, {"water_every": 5})
         result = Tasks.send_watering_reminders(database_test_session)
         m_send_notification.assert_called_with(
             "There are 2 plants that need to be watered"

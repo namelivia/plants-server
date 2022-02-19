@@ -9,7 +9,7 @@ class Plant(Base):
     name = Column(String, nullable=False)
     journaling_key = Column(GUID, nullable=False)
     description = Column(String)
-    days_until_watering = Column(Integer, nullable=False)
+    water_every = Column(Integer, nullable=False)
     last_watering = Column(DateTime, nullable=False, server_default=func.now())
     alive = Column(Boolean, nullable=False)
     image = Column(String)

@@ -26,7 +26,7 @@ def get_dead_plants(db: Session):
 def create_plant(db: Session, plant: schemas.PlantCreate):
     db_plant = models.Plant(
         **plant.dict(),
-        days_until_watering=7,  # TODO: This will come from an API
+        water_every=7,  # TODO: This will come from an API
         last_watering=datetime.datetime.now(),
         journaling_key=uuid.uuid4(),
         alive=True,
@@ -115,7 +115,7 @@ def get_plants_to_be_watered(db: Session):
         .filter(models.Plant.alive == True)
         .filter(
             # TODO: This will compare the last date
-            models.Plant.days_until_watering
+            models.Plant.water_every
             > 5
         )
         .all()
