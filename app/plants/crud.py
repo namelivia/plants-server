@@ -10,7 +10,9 @@ from app.journaling.journaling import Journaling
 logger = logging.getLogger(__name__)
 
 
-def _calculate_days_until_next_watering(last_watering: datetime, water_every: int) -> int:
+def _calculate_days_until_next_watering(
+    last_watering: datetime, water_every: int
+) -> int:
     next_watering_day = last_watering + datetime.timedelta(days=water_every)
     today = datetime.datetime.now()
     until_next_watering = next_watering_day - today
