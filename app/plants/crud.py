@@ -147,13 +147,10 @@ def kill_plant(db: Session, plant: models.Plant):
 
 
 def get_plants_to_be_watered(db: Session):
-    return (
-        db.query(models.Plant)
-        .filter(models.Plant.alive == True)
-        .filter(
-            # TODO: This will compare the last date
-            models.Plant.water_every
-            > 5
+    plants = db.query(models.Plant).filter(models.Plant.alive == True).all()
+    for plant in plants:
+        plant.until_next_watering = _calculate_days_until_next_watering(
+            plant.last_watering,
+            plant.water_every,
         )
-        .all()
-    )
+    return [plant for plant in plants if plant.until_next_watering < 0]

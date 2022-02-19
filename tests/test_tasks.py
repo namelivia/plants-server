@@ -33,19 +33,20 @@ class TestApp:
     def test_sending_watering_reminders(
         self, m_send_notification, database_test_session
     ):
-        self._insert_test_plant(database_test_session)
         dry_plant = self._insert_test_plant(
-            database_test_session, {"water_every": 10}
+            database_test_session, {"water_every": 2}
         )
         another_dry_plant = self._insert_test_plant(
-            database_test_session, {"water_every": 12}
+            database_test_session, {"water_every": 3}
         )
         # Dead plant
         self._insert_test_plant(
             database_test_session, {"water_every": 12, "alive": False}
         )
+        # Not a dry plant
         self._insert_test_plant(database_test_session, {"water_every": 5})
-        result = Tasks.send_watering_reminders(database_test_session)
+        with freeze_time("2013-04-13"):
+            result = Tasks.send_watering_reminders(database_test_session)
         m_send_notification.assert_called_with(
             "There are 2 plants that need to be watered"
         )
