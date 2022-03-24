@@ -155,4 +155,4 @@ def get_plants_to_be_watered(db: Session):
             plant.last_watering,
             plant.water_every,
         )
-    return [plant for plant in plants if plant.until_next_watering < 0]
+    return [plant for plant in plants if plant.until_next_watering <= 0]

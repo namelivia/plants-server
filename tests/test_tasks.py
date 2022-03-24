@@ -33,7 +33,7 @@ class TestApp:
     def test_sending_watering_reminders(
         self, m_send_notification, database_test_session
     ):
-        dry_plant = self._insert_test_plant(database_test_session, {"water_every": 2})
+        dry_plant = self._insert_test_plant(database_test_session, {"water_every": 4})
         another_dry_plant = self._insert_test_plant(
             database_test_session, {"water_every": 3}
         )
