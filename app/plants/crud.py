@@ -104,6 +104,30 @@ def update_plant(db: Session, plant_id: int, new_plant_data: schemas.PlantUpdate
     return plant
 
 
+def update_watering_schedule(db: Session, plant_id: int, days: int):
+    plants = db.query(models.Plant).filter(models.Plant.id == plant_id)
+    plants.update({"water_every": days}, synchronize_session=False)
+    db.commit()
+    plant = plants.first()
+    plant.until_next_watering = _calculate_days_until_next_watering(
+        plant.last_watering,
+        plant.water_every,
+    )
+    logger.info("Plant watering schedule updated")
+    try:
+        Notifications.send(f"The plant {plant.name} will be watered every {days} days")
+    except Exception as err:
+        logger.error(f"Notification could not be sent: {str(err)}")
+    try:
+        Journaling.create(
+            plant.journaling_key,
+            f"The plant {plant.name} will be watered every {days} days",
+        )
+    except Exception as err:
+        logger.error(f"Could not add journal entry: {str(err)}")
+    return plant
+
+
 def delete_plant(db: Session, plant: models.Plant):
     db.delete(plant)
     db.commit()

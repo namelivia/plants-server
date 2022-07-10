@@ -16,7 +16,7 @@ def plants(db: Session = Depends(get_db), skip: int = 0, limit: int = 10):
 
 
 @router.get("/dead", response_model=List[schemas.Plant])
-def plants(db: Session = Depends(get_db), skip: int = 0, limit: int = 10):
+def dead_plants(db: Session = Depends(get_db), skip: int = 0, limit: int = 10):
     plants = crud.get_dead_plants(db)
     return plants
 
@@ -71,7 +71,7 @@ def water_plant(
 
 
 @router.post("/{plant_id}/kill", response_model=schemas.Plant)
-def water_plant(
+def kill_plant(
     plant_id: int = Path(None, title="The ID of the plant to kill", ge=1),
     db: Session = Depends(get_db),
 ):
@@ -100,3 +100,14 @@ async def delete_plant(
 ):
     crud.delete_plant(db, _get_plant(db, plant_id))
     return Response(status_code=HTTPStatus.NO_CONTENT)
+
+
+@router.post(
+    "/{plant_id}/water_every", response_model=schemas.Plant, status_code=HTTPStatus.OK
+)
+def water_every(
+    new_plant_schedule: schemas.WaterEvery,
+    db: Session = Depends(get_db),
+    plant_id: int = Path(None, title="The ID for the plant to update", ge=1),
+):
+    return crud.update_watering_schedule(db, plant_id, new_plant_schedule.days)

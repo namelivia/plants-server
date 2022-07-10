@@ -18,6 +18,10 @@ class PlantUpdate(PlantBase):
     pass
 
 
+class WaterEvery(BaseModel):
+    days: int
+
+
 class Plant(PlantBase):
     id: int
     water_every: int = Field(title="Number of days between each watering")

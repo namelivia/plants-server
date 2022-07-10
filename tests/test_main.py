@@ -285,3 +285,23 @@ class TestApp:
         # m_get.assert_called_with("http://images-service:80/image/image_path")
         assert response.status_code == 200
         assert response.content == b"image_binary_data"
+
+    def test_updating_watering_schedule(self, client, database_test_session):
+        key = uuid.uuid4()
+        self._insert_test_plant(database_test_session, {"journaling_key": key})
+        response = client.post(
+            "/plants/1/water_every",
+            json={"days": 5},
+        )
+        assert response.status_code == 200
+        assert response.json() == {
+            "id": 1,
+            "name": "Test plant",
+            "description": "Test Description",
+            "last_watering": "2013-04-09T00:00:00",
+            "water_every": 5,
+            "until_next_watering": 5,
+            "alive": True,
+            "image": None,
+            "journaling_key": str(key),
+        }
