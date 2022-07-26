@@ -27,6 +27,13 @@ jobs:
           target: development
           load: true
           tags: plants-server-testing:latest
+          
+      -
+        name: Scan image
+        uses: anchore/scan-action@v3
+        with:
+          image: plants-server-testing:latest
+
       - 
         name: Run tests
         uses: addnab/docker-run-action@v1
