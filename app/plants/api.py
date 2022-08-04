@@ -15,6 +15,12 @@ def plants(db: Session = Depends(get_db), skip: int = 0, limit: int = 10):
     return plants
 
 
+@router.get("/to_be_watered", response_model=List[schemas.Plant])
+def to_be_watered(db: Session = Depends(get_db)):
+    plants = crud.get_plants_to_be_watered(db)
+    return plants
+
+
 @router.get("/dead", response_model=List[schemas.Plant])
 def dead_plants(db: Session = Depends(get_db), skip: int = 0, limit: int = 10):
     plants = crud.get_dead_plants(db)

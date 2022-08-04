@@ -213,6 +213,49 @@ class TestApp:
             },
         ]
 
+    def test_get_plants_to_be_watered(self, client, database_test_session):
+        key = uuid.uuid4()
+        # Two dry plants
+        self._insert_test_plant(
+            database_test_session, {"water_every": 4, "journaling_key": key}
+        )
+        self._insert_test_plant(
+            database_test_session, {"water_every": 3, "journaling_key": key}
+        )
+        # Dead plant
+        self._insert_test_plant(
+            database_test_session, {"water_every": 12, "alive": False}
+        )
+        # Not a dry plant
+        self._insert_test_plant(database_test_session, {"water_every": 5})
+        with freeze_time("2013-04-13"):
+            response = client.get("/plants/to_be_watered")
+        assert response.status_code == 200
+        assert response.json() == [
+            {
+                "name": "Test plant",
+                "description": "Test Description",
+                "image": None,
+                "id": 1,
+                "water_every": 4,
+                "until_next_watering": 0,
+                "journaling_key": str(key),
+                "last_watering": "2013-04-09T00:00:00",
+                "alive": True,
+            },
+            {
+                "name": "Test plant",
+                "description": "Test Description",
+                "image": None,
+                "id": 2,
+                "water_every": 3,
+                "until_next_watering": -1,
+                "journaling_key": str(key),
+                "last_watering": "2013-04-09T00:00:00",
+                "alive": True,
+            },
+        ]
+
     def test_get_dead_plants(self, client, database_test_session):
         key = uuid.uuid4()
         self._insert_test_plant(database_test_session, {"journaling_key": key})
