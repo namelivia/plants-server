@@ -25,12 +25,13 @@ gunicorn = "*"
 uvloop = "*"
 httptools = "*"
 httpx = "*"
-pyjwt = {editable = true, ref = "master", git = "https://github.com/jpadilla/pyjwt.git"}
+pyjwt = {editable = true,ref = "master",git = "https://github.com/jpadilla/pyjwt.git"}
 cryptography = "*"
 fastapi-utils = "*"
 pytest-freezegun = "*"
 black = "*"
 install = "*"
+python-gettext = "*"
 
 [requires]
 python_version = "3.8"
