@@ -10,7 +10,7 @@ class TestServices:
         Notifications.send("Test message")
         m_post.assert_called_with(
             url="http://notifications-service:80",
-            json={"message": "Test message"},
+            json={"body": "Test message"},
         )
 
     @patch("requests.post")
