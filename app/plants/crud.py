@@ -67,7 +67,10 @@ def create_plant(db: Session, plant: schemas.PlantCreate):
     )
     logger.info("New plant created")
     try:
-        Notifications.send(f"A new plant called {db_plant.name} has been created")
+        Notifications.send("en", f"A new plant called {db_plant.name} has been created")
+        Notifications.send(
+            "es", f"Una planta nueva llamada {db_plant.name} se ha creado"
+        )
     except Exception as err:
         logger.error(f"Notification could not be sent: {str(err)}")
     try:
@@ -91,7 +94,8 @@ def update_plant(db: Session, plant_id: int, new_plant_data: schemas.PlantUpdate
     )
     logger.info("Plant updated")
     try:
-        Notifications.send(f"The plant {plant.name} has been updated")
+        Notifications.send("en", f"The plant {plant.name} has been updated")
+        Notifications.send("es", f"La planta {plant.name} se ha actualizado")
     except Exception as err:
         logger.error(f"Notification could not be sent: {str(err)}")
     try:
@@ -115,7 +119,10 @@ def update_watering_schedule(db: Session, plant_id: int, days: int):
     )
     logger.info("Plant watering schedule updated")
     try:
-        Notifications.send(f"The plant {plant.name} will be watered every {days} days")
+        Notifications.send(
+            "en", f"The plant {plant.name} will be watered every {days} days"
+        )
+        Notifications.send("es", f"La planta {plant.name} se regará cada {days} días")
     except Exception as err:
         logger.error(f"Notification could not be sent: {str(err)}")
     try:
@@ -139,7 +146,8 @@ def water_plant(db: Session, plant: models.Plant):
     db.commit()
     db.refresh(plant)
     try:
-        Notifications.send(f"The plant {plant.name} has been watered")
+        Notifications.send("en", f"The plant {plant.name} has been watered")
+        Notifications.send("es", f"La planta {plant.name} se ha regado")
     except Exception as err:
         logger.error(f"Notification could not be sent: {str(err)}")
     try:
@@ -161,7 +169,8 @@ def kill_plant(db: Session, plant: models.Plant):
     db.commit()
     db.refresh(plant)
     try:
-        Notifications.send(f"The plant {plant.name} is now dead")
+        Notifications.send("en", f"The plant {plant.name} is now dead")
+        Notifications.send("es", f"La planta {plant.name} está muerta")
     except Exception as err:
         logger.error(f"Notification could not be sent: {str(err)}")
     try:
