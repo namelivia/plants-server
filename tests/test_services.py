@@ -6,12 +6,17 @@ from app.journaling.journaling import Journaling
 
 class TestServices:
     @patch("requests.post")
-    def test_sending_a_notification(self, m_post):
-        Notifications.send("Test message")
+    def test_sending_a_notification_in_spanish(self, m_post):
+        Notifications.send("es", "Prueba")
         m_post.assert_called_with(
             url="http://notifications-service:80",
-            json={"body": "Test message"},
+            json={"body": "Prueba"},
         )
+
+    @patch("requests.post")
+    def test_sending_a_notification_in_english(self, m_post):
+        Notifications.send("en", "Test")
+        m_post.assert_not_called()  # English notifications won't be sent yet, there is no endpoint
 
     @patch("requests.post")
     def test_creating_a_journal_entry(self, m_post):

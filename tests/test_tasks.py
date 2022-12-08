@@ -45,8 +45,9 @@ class TestApp:
         self._insert_test_plant(database_test_session, {"water_every": 5})
         with freeze_time("2013-04-13"):
             result = Tasks.send_watering_reminders(database_test_session)
-        m_send_notification.assert_called_with(
-            "There are 2 plants that need to be watered"
+        m_send_notification.assert_any_call(
+            "en", "There are 2 plants that need to be watered"
         )
+        m_send_notification.assert_any_call("es", "Hay 2 plantas que necesitan regarse")
         assert len(result) == 2
         assert set(result) == set([dry_plant, another_dry_plant])
