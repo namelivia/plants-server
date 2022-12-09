@@ -55,8 +55,8 @@ class TestApp:
             "alive": True,
             "last_watering": "2013-04-09T00:00:00",
         }
-        m_send_notification.assert_called_with(
-            "A new plant called Test plant 2 has been created"
+        m_send_notification.assert_any_call(
+            "en", "A new plant called Test plant 2 has been created"
         )
 
     @patch("uuid.uuid4")
@@ -77,8 +77,8 @@ class TestApp:
             "alive": True,
             "last_watering": "2013-04-09T00:00:00",
         }
-        m_send_notification.assert_called_with(
-            "A new plant called Test plant has been created"
+        m_send_notification.assert_any_call(
+            "en", "A new plant called Test plant has been created"
         )
 
     def test_get_non_existing_plant(self, client):
@@ -154,7 +154,9 @@ class TestApp:
             "alive": True,
             "last_watering": "2013-04-09T00:00:00",
         }
-        m_send_notification.assert_called_with("The plant Test plant has been watered")
+        m_send_notification.assert_any_call(
+            "en", "The plant Test plant has been watered"
+        )
 
     @patch("app.notifications.notifications.Notifications.send")
     def test_kill_plant(self, m_send_notification, client, database_test_session):
@@ -176,7 +178,7 @@ class TestApp:
             "alive": False,
             "last_watering": "2013-04-09T00:00:00",
         }
-        m_send_notification.assert_called_with("The plant Test plant is now dead")
+        m_send_notification.assert_any_call("en", "The plant Test plant is now dead")
 
     def test_get_all_plants(self, client, database_test_session):
         key = uuid.uuid4()
