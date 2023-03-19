@@ -453,11 +453,11 @@
         },
         "importlib-metadata": {
             "hashes": [
-                "sha256:7efb448ec9a5e313a57655d35aa54cd3e01b7e1fbcf72dce1bf06119420f5bad",
-                "sha256:e354bedeb60efa6affdcc8ae121b73544a7aa74156d047311948f6d711cd378d"
+                "sha256:43ce9281e097583d758c2c708c4376371261a02c34682491a8e98352365aad20",
+                "sha256:ff80f3b5394912eb1b108fcfd444dc78b7f1f3e16b16188054bd01cb9cb86f09"
             ],
             "markers": "python_version < '3.9'",
-            "version": "==6.0.0"
+            "version": "==6.1.0"
         },
         "importlib-resources": {
             "hashes": [
@@ -658,7 +658,7 @@
         "pyjwt": {
             "editable": true,
             "git": "https://github.com/jpadilla/pyjwt.git",
-            "ref": "216cb51e80d36669e235f5fceb5a0fe84e35279c"
+            "ref": "20a5ae1fb2a4afa399a4825546aa5df3dd793a58"
         },
         "pytest": {
             "hashes": [
@@ -1038,7 +1038,7 @@
         },
         "coverage": {
             "extras": [
-                "toml"
+
             ],
             "hashes": [
                 "sha256:006ed5582e9cbc8115d2e22d6d2144a0725db542f654d9d4fda86793832f873d",
@@ -1217,11 +1217,11 @@
         },
         "pre-commit": {
             "hashes": [
-                "sha256:b80254e60668e1dd1f5c03a1c9e0413941d61f568a57d745add265945f65bfe8",
-                "sha256:d63e6537f9252d99f65755ae5b79c989b462d511ebbc481b561db6a297e1e865"
+                "sha256:818f0d998059934d0f81bb3667e3ccdc32da6ed7ccaac33e43dc231561ddaaa9",
+                "sha256:f712d3688102e13c8e66b7d7dbd8934a6dda157e58635d89f7d6fecdca39ce8a"
             ],
             "index": "pypi",
-            "version": "==3.1.1"
+            "version": "==3.2.0"
         },
         "pudb": {
             "hashes": [
