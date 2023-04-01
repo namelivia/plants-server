@@ -272,11 +272,11 @@
         },
         "fastapi": {
             "hashes": [
-                "sha256:451387550c2d25a972193f22e408a82e75a8e7867c834a03076704fe20df3256",
-                "sha256:4a75936dbf9eb74be5eb0d41a793adefe9f3fc6ba66dbdabd160120fd3c2d9cd"
+                "sha256:99d4fdb10e9dd9a24027ac1d0bd4b56702652056ca17a6c8721eec4ad2f14e18",
+                "sha256:daf73bbe844180200be7966f68e8ec9fd8be57079dff1bacb366db32729e6eb5"
             ],
             "index": "pypi",
-            "version": "==0.94.1"
+            "version": "==0.95.0"
         },
         "fastapi-utils": {
             "hashes": [
@@ -1033,9 +1033,6 @@
             "version": "==2.1.12"
         },
         "coverage": {
-            "extras": [
-
-            ],
             "hashes": [
                 "sha256:006ed5582e9cbc8115d2e22d6d2144a0725db542f654d9d4fda86793832f873d",
                 "sha256:046936ab032a2810dcaafd39cc4ef6dd295df1a7cbead08fe996d4765fca9fe4",
