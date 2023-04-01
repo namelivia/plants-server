@@ -36,7 +36,7 @@ def _get_plant(db: Session, plant_id: int):
 
 @router.get("/{plant_id}", response_model=schemas.Plant)
 def get_plant(
-    plant_id: int = Path(None, title="The ID of the plant to get", ge=1),
+    plant_id: int = Path(title="The ID of the plant to get", ge=1),
     db: Session = Depends(get_db),
 ):
     return _get_plant(db, plant_id)
@@ -46,7 +46,7 @@ def get_plant(
 def get_journal(
     db: Session = Depends(get_db),
     plant_id: int = Path(
-        None, title="The ID of the plant to get the journal from", ge=1
+        title="The ID of the plant to get the journal from", ge=1
     ),
 ):
     plant = _get_plant(db, plant_id)
@@ -61,7 +61,7 @@ def get_journal(
 def post_journal_entry(
     new_entry: schemas.JournalEntryCreate,
     db: Session = Depends(get_db),
-    plant_id: int = Path(None, title="The ID for the plant", ge=1),
+    plant_id: int = Path(title="The ID for the plant", ge=1),
 ):
     plant = _get_plant(db, plant_id)
     return Journaling.create(plant.journaling_key, new_entry.message)
@@ -69,7 +69,7 @@ def post_journal_entry(
 
 @router.post("/{plant_id}/water", response_model=schemas.Plant)
 def water_plant(
-    plant_id: int = Path(None, title="The ID of the plant to get", ge=1),
+    plant_id: int = Path(title="The ID of the plant to get", ge=1),
     db: Session = Depends(get_db),
 ):
     plant = _get_plant(db, plant_id)
@@ -78,7 +78,7 @@ def water_plant(
 
 @router.post("/{plant_id}/kill", response_model=schemas.Plant)
 def kill_plant(
-    plant_id: int = Path(None, title="The ID of the plant to kill", ge=1),
+    plant_id: int = Path(title="The ID of the plant to kill", ge=1),
     db: Session = Depends(get_db),
 ):
     plant = _get_plant(db, plant_id)
@@ -94,14 +94,14 @@ def create_plant(plant: schemas.PlantCreate, db: Session = Depends(get_db)):
 def update_plant(
     new_plant_data: schemas.PlantUpdate,
     db: Session = Depends(get_db),
-    plant_id: int = Path(None, title="The ID for the plant to update", ge=1),
+    plant_id: int = Path(title="The ID for the plant to update", ge=1),
 ):
     return crud.update_plant(db, plant_id, new_plant_data)
 
 
 @router.delete("/{plant_id}")
 async def delete_plant(
-    plant_id: int = Path(None, title="The ID of the plant to remove", ge=1),
+    plant_id: int = Path(title="The ID of the plant to remove", ge=1),
     db: Session = Depends(get_db),
 ):
     crud.delete_plant(db, _get_plant(db, plant_id))
@@ -114,6 +114,6 @@ async def delete_plant(
 def water_every(
     new_plant_schedule: schemas.WaterEvery,
     db: Session = Depends(get_db),
-    plant_id: int = Path(None, title="The ID for the plant to update", ge=1),
+    plant_id: int = Path(title="The ID for the plant to update", ge=1),
 ):
     return crud.update_watering_schedule(db, plant_id, new_plant_schedule.days)
