@@ -45,9 +45,7 @@ def get_plant(
 @router.get("/{plant_id}/journal")
 def get_journal(
     db: Session = Depends(get_db),
-    plant_id: int = Path(
-        title="The ID of the plant to get the journal from", ge=1
-    ),
+    plant_id: int = Path(title="The ID of the plant to get the journal from", ge=1),
 ):
     plant = _get_plant(db, plant_id)
     return Journaling.get(plant.journaling_key)
