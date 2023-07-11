@@ -73,6 +73,12 @@ def water_plant(
     plant = _get_plant(db, plant_id)
     return crud.water_plant(db, plant)
 
+@router.post("/water_all", status_code=204, response_class=Response)
+def water_all_plants(
+    db: Session = Depends(get_db)
+):
+    crud.water_all_plants(db)
+
 
 @router.post("/{plant_id}/kill", response_model=schemas.Plant)
 def kill_plant(

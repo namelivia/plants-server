@@ -159,6 +159,24 @@ class TestApp:
         )
 
     @patch("app.notifications.notifications.Notifications.send")
+    def test_water_all_plants(self, m_send_notification, client, database_test_session):
+        key = uuid.uuid4()
+        self._insert_test_plant(
+            database_test_session,
+            {"journaling_key": key, "last_watering": datetime.datetime(2012, 5, 5)},
+        )
+        self._insert_test_plant(
+            database_test_session,
+            {"journaling_key": key, "last_watering": datetime.datetime(2012, 5, 5)},
+        )
+        response = client.post("/plants/water_all")
+        assert response.status_code == 204
+        m_send_notification.assert_any_call(
+            "en", "The plant Test plant has been watered"
+        )
+
+
+    @patch("app.notifications.notifications.Notifications.send")
     def test_kill_plant(self, m_send_notification, client, database_test_session):
         key = uuid.uuid4()
         self._insert_test_plant(
