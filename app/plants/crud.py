@@ -163,6 +163,7 @@ def water_plant(db: Session, plant: models.Plant):
     )
     return plant
 
+
 def water_all_plants(db: Session):
     plants = get_plants_to_be_watered(db)
     [water_plant(db, plant) for plant in plants]

@@ -175,7 +175,6 @@ class TestApp:
             "en", "The plant Test plant has been watered"
         )
 
-
     @patch("app.notifications.notifications.Notifications.send")
     def test_kill_plant(self, m_send_notification, client, database_test_session):
         key = uuid.uuid4()
