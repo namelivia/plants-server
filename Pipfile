@@ -31,7 +31,7 @@ pytest-freezegun = "*"
 black = "*"
 install = "*"
 python-gettext = "*"
-httpx = "~=0.25.0"
+httpx = "~=0.25.1"
 
 [requires]
 python_version = "3.8"
