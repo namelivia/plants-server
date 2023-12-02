@@ -791,7 +791,7 @@
                 "sha256:56a8f7a8776ea160e59ef0af6fc3a3a03b7d42156b90e47f0241515fcec620c2",
                 "sha256:cc22327e22d9b583d1565ce1ed9f5ecc22831afa743f8789a403cad849fb702b"
             ],
-            "markers": "python_version >= '3.8'",
+            "markers": "python_version < '3.11'",
             "version": "==4.9.0rc1"
         },
         "urllib3": {
