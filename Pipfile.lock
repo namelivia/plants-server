@@ -711,12 +711,12 @@
         },
         "python-multipart": {
             "hashes": [
-                "sha256:e9925a80bb668529f1b67c7fdb0a5dacdd7cbfc6fb0bff3ea443fe22bdd62132",
-                "sha256:ee698bab5ef148b0a760751c261902cd096e57e10558e11aca17646b74ee1c18"
+                "sha256:613015c642c2f6dc6d22e2d3a4d993683bb4752509ccd87f831dced121ed2f1d",
+                "sha256:999725bf08cf7a071073d157a27cc34f8669af98da0d2435bde1cc1493a50ec3"
             ],
             "index": "pypi",
             "markers": "python_version >= '3.7'",
-            "version": "==0.0.6"
+            "version": "==0.0.8"
         },
         "requests": {
             "hashes": [
