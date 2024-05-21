@@ -33,9 +33,11 @@ class TestApp:
     def test_sending_watering_reminders(
         self, m_send_notification, database_test_session
     ):
-        dry_plant = self._insert_test_plant(database_test_session, {"water_every": 4})
+        dry_plant = self._insert_test_plant(
+            database_test_session, {"name": "Plant1", "water_every": 4}
+        )
         another_dry_plant = self._insert_test_plant(
-            database_test_session, {"water_every": 3}
+            database_test_session, {"name": "Plant2", "water_every": 3}
         )
         # Dead plant
         self._insert_test_plant(
@@ -46,8 +48,10 @@ class TestApp:
         with freeze_time("2013-04-13"):
             result = Tasks.send_watering_reminders(database_test_session)
         m_send_notification.assert_any_call(
-            "en", "There are 2 plants that need to be watered"
+            "en", "There are 2 plants that need to be watered\n- Plant1\n- Plant2"
         )
-        m_send_notification.assert_any_call("es", "Hay 2 plantas que necesitan regarse")
+        m_send_notification.assert_any_call(
+            "es", "Hay 2 plantas que necesitan regarse\n- Plant1\n- Plant2"
+        )
         assert len(result) == 2
         assert set(result) == set([dry_plant, another_dry_plant])
