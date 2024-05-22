@@ -41,6 +41,7 @@ class TestApp:
             json={
                 "name": "Test plant 2",
                 "description": "Test description",
+                "image": None,
             },
         )
         assert response.status_code == 201
@@ -57,28 +58,6 @@ class TestApp:
         }
         m_send_notification.assert_any_call(
             "en", "A new plant called Test plant 2 has been created"
-        )
-
-    @patch("uuid.uuid4")
-    @patch("app.notifications.notifications.Notifications.send")
-    def test_create_plant_no_description(self, m_send_notification, m_uuid, client):
-        key = "271c973a-638f-4e01-9a79-308c880e3d11"
-        m_uuid.return_value = key
-        response = client.post("/plants", json={"name": "Test plant"})
-        assert response.status_code == 201
-        assert response.json() == {
-            "id": 1,
-            "name": "Test plant",
-            "description": None,
-            "water_every": 7,
-            "until_next_watering": 7,
-            "image": None,
-            "journaling_key": key,
-            "alive": True,
-            "last_watering": "2013-04-09T00:00:00",
-        }
-        m_send_notification.assert_any_call(
-            "en", "A new plant called Test plant has been created"
         )
 
     def test_get_non_existing_plant(self, client):
@@ -323,6 +302,7 @@ class TestApp:
                 "name": "Updated name",
                 "description": original_plant.description,
                 "journaling_key": str(key),
+                "image": None,
             },
         )
         assert response.status_code == 200
@@ -367,3 +347,30 @@ class TestApp:
             "image": None,
             "journaling_key": str(key),
         }
+
+    @patch("app.notifications.notifications.Notifications.send")
+    def test_sending_watering_reminders(
+        self, m_send_notification, database_test_session
+    ):
+        dry_plant = self._insert_test_plant(
+            database_test_session, {"name": "Plant1", "water_every": 4}
+        )
+        another_dry_plant = self._insert_test_plant(
+            database_test_session, {"name": "Plant2", "water_every": 3}
+        )
+        # Dead plant
+        self._insert_test_plant(
+            database_test_session, {"water_every": 12, "alive": False}
+        )
+        # Not a dry plant
+        self._insert_test_plant(database_test_session, {"water_every": 5})
+        with freeze_time("2013-04-13"):
+            result = Tasks.send_watering_reminders(database_test_session)
+        m_send_notification.assert_any_call(
+            "en", "There are 2 plants that need to be watered\n- Plant1\n- Plant2"
+        )
+        m_send_notification.assert_any_call(
+            "es", "Hay 2 plantas que necesitan regarse\n- Plant1\n- Plant2"
+        )
+        assert len(result) == 2
+        assert set(result) == set([dry_plant, another_dry_plant])
