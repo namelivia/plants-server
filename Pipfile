@@ -11,6 +11,7 @@ pudb = "*"
 codecov = "*"
 black = "*"
 pre-commit = "*"
+typing-inspect = "*"
 
 [packages]
 fastapi = "*"
