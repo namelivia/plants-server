@@ -54,6 +54,7 @@ def create_plant(db: Session, plant: schemas.PlantCreate):
     db_plant = models.Plant(
         **plant.dict(),
         water_every=7,  # TODO: This will come from an API
+        indoor=True,  # TODO: This will come from the API
         last_watering=datetime.datetime.now(),
         journaling_key=uuid.uuid4(),
         alive=True,

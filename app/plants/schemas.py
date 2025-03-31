@@ -29,6 +29,7 @@ class Plant(PlantBase):
     journaling_key: UUID = Field(title="Parent key for the journal entry")
     last_watering: datetime.datetime = Field(title="Time of the last watering")
     alive: bool = Field(title="If the plant is alive")
+    indoor: bool = Field(title="If the plant is placed indoor")
 
     class Config:
         orm_mode = True

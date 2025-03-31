@@ -12,4 +12,5 @@ class Plant(Base):
     water_every = Column(Integer, nullable=False)
     last_watering = Column(DateTime, nullable=False, server_default=func.now())
     alive = Column(Boolean, nullable=False)
+    indoor = Column(Boolean, nullable=False)
     image = Column(String)

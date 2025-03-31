@@ -23,6 +23,7 @@ class TestApp:
             "water_every": 3,
             "journaling_key": key,
             "alive": True,
+            "indoor": False,
             "last_watering": datetime.datetime.now(),
         }
         data.update(plant)
@@ -54,6 +55,7 @@ class TestApp:
             "image": None,
             "journaling_key": key,
             "alive": True,
+            "indoor": False,
             "last_watering": "2013-04-09T00:00:00",
         }
         m_send_notification.assert_any_call(
@@ -106,6 +108,7 @@ class TestApp:
             "image": None,
             "journaling_key": str(key),
             "alive": True,
+            "indoor": False,
             "last_watering": "2013-04-09T00:00:00",
         }
 
@@ -131,6 +134,7 @@ class TestApp:
             "image": None,
             "journaling_key": str(key),
             "alive": True,
+            "indoor": False,
             "last_watering": "2013-04-09T00:00:00",
         }
         m_send_notification.assert_any_call(
@@ -172,6 +176,7 @@ class TestApp:
             "image": None,
             "journaling_key": str(key),
             "alive": False,
+            "indoor": False,
             "last_watering": "2013-04-09T00:00:00",
         }
         m_send_notification.assert_any_call("en", "The plant Test plant is now dead")
@@ -196,6 +201,7 @@ class TestApp:
                 "image": None,
                 "journaling_key": str(key),
                 "alive": True,
+                "indoor": False,
                 "last_watering": "2013-04-09T00:00:00",
             },
             {
@@ -207,6 +213,7 @@ class TestApp:
                 "image": None,
                 "journaling_key": str(key),
                 "alive": True,
+                "indoor": False,
                 "last_watering": "2013-04-09T00:00:00",
             },
         ]
@@ -240,6 +247,7 @@ class TestApp:
                 "journaling_key": str(key),
                 "last_watering": "2013-04-09T00:00:00",
                 "alive": True,
+                "indoor": False,
             },
             {
                 "name": "Test plant",
@@ -251,6 +259,7 @@ class TestApp:
                 "journaling_key": str(key),
                 "last_watering": "2013-04-09T00:00:00",
                 "alive": True,
+                "indoor": False,
             },
         ]
 
@@ -274,6 +283,7 @@ class TestApp:
                 "image": None,
                 "journaling_key": str(key),
                 "alive": False,
+                "indoor": False,
                 "last_watering": "2013-04-09T00:00:00",
             },
         ]
@@ -314,6 +324,7 @@ class TestApp:
             "water_every": 3,
             "until_next_watering": 3,
             "alive": True,
+            "indoor": False,
             "image": None,
             "journaling_key": str(key),
         }
@@ -344,6 +355,7 @@ class TestApp:
             "water_every": 5,
             "until_next_watering": 5,
             "alive": True,
+            "indoor": False,
             "image": None,
             "journaling_key": str(key),
         }
