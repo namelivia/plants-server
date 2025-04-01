@@ -1,9 +1,8 @@
 """Initial migration
 
 Revision ID: dc7bec5b2128
-Revises: 
+Revises:
 Create Date: 2020-12-27 21:36:21.151146
-
 """
 
 from alembic import op
