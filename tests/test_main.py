@@ -55,7 +55,7 @@ class TestApp:
             "image": None,
             "journaling_key": key,
             "alive": True,
-            "indoor": False,
+            "indoor": True,
             "last_watering": "2013-04-09T00:00:00",
         }
         m_send_notification.assert_any_call(
