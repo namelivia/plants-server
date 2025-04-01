@@ -1,4 +1,3 @@
-version: '3'
 services:
 
   app:
@@ -26,7 +25,7 @@ services:
       IMAGES_SERVICE_ENDPOINT: "http://images-service:80"
       USER_INFO_SERVICE_ENDPOINT: "http://user-info-service:80"
     command: [
-        "pipenv",
+        "poetry",
         "run",
         "uvicorn",
         "app.main:app",
@@ -64,5 +63,5 @@ services:
 #Docker Networks
 networks:
   default:
-    external:
-      name: local-development-network
+    external: true
+    name: local-development-network

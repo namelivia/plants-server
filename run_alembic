@@ -4,4 +4,4 @@ if [ "$1" == "" ]; then
     exit
 fi
 
-docker exec -e PYTHONPATH=. plants-server-app pipenv run alembic revision --autogenerate -m "$1"
+docker exec -e PYTHONPATH=. plants-server-app poetry run alembic revision --autogenerate -m "$1"
