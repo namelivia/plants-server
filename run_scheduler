@@ -1,2 +1,2 @@
 #!/bin/bash
-docker exec -e PYTHONPATH=. plants-server-app pipenv run scheduler
+docker exec -e PYTHONPATH=. plants-server-app poetry run scheduler

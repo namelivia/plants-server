@@ -3,7 +3,7 @@ on:
   workflow_dispatch:
   push:
     branches:
-      - master
+      - main
     tags:
       - '*'
 jobs:
@@ -55,7 +55,7 @@ jobs:
         name: Determine Docker tag
         id: docker_tag
         run: |
-          if [ "${{ github.ref }}" == "refs/heads/master" ]; then
+          if [ "${{ github.ref }}" == "refs/heads/main" ]; then
             echo "TAG=latest" >> $GITHUB_ENV
           elif [[ "${{ github.ref }}" == refs/tags/* ]]; then
             VERSION_TAG=${{ github.ref }} 
