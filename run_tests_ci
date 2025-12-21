@@ -1,9 +1,0 @@
-#!/bin/bash
-TESTING=True \
-TEST_DATABASE_URL=sqlite:///./test.db \
-IMAGES_SERVICE_ENDPOINT=http://images-service:80 \
-NOTIFICATIONS_SERVICE_ENDPOINT=http://notifications-service:80 \
-USER_INFO_SERVICE_ENDPOINT=http://user-info-service:80 \
-JOURNALING_SERVICE_ENDPOINT=http://journaling-service:80 \
-poetry run pytest --cov-report=xml --cov=app && \
-poetry run codecov --commit=$1 -t $2

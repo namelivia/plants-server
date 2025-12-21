@@ -1,1 +1,0 @@
-cat ./seed/depopulate.sql | docker exec -i plants-server-database psql -U user plants

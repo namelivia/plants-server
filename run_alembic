@@ -1,7 +1,0 @@
-#!/bin/bash
-if [ "$1" == "" ]; then
-    echo "Please add a migration message"
-    exit
-fi
-
-docker exec -e PYTHONPATH=. plants-server-app poetry run alembic revision --autogenerate -m "$1"
